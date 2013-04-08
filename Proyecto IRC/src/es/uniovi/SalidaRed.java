@@ -29,13 +29,12 @@ public class SalidaRed extends Thread{
 	 */
 	public void run(){
 		Comando c;
-		Network net = new Network();
 		try{
 			while(true){
 				// Espera nuevos comandos
 				c = outQueue.take();
 				// Cuando llega alguno intenta enviarlo usando Network
-				net.send(c.get());
+				ClienteChat.net.send(c.get());
 				
 			}
 		}catch(Exception e){

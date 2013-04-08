@@ -21,7 +21,7 @@ public class HiloEntrada extends Thread{
 				// Genera el comando
 				cmd = new Comando(line);
 				// Envia el comando
-				ClienteChat.out.send(cmd);
+				ClienteChat.netOut.send(cmd);
 				
 			}catch(IOException e){
 				e.printStackTrace();

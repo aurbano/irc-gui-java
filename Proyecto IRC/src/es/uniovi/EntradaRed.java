@@ -14,10 +14,9 @@ public class EntradaRed extends Thread {
 	public void run(){
 		String message;
 		Respuesta res;
-		Network net = new Network();
 		while(true){
 			try{
-				message = net.recv();
+				message = ClienteChat.net.recv();
 				if(message.length() > 0){
 					res = new Respuesta(message);
 					add(res);
