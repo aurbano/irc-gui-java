@@ -1,10 +1,9 @@
+package es.uniovi;
+
 /**
  *  Cliente de consola de chat
  *
  */
-
-package es.uniovi;
-
 public class ClienteChat {
 	static String nick;
 	static String sala = 'pruebas';
