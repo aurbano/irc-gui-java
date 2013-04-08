@@ -15,8 +15,12 @@ public class Comando {
 	 * Devuelve la cadena completa
 	 */
 	public String get(){
-		String ret = params[0]+ClienteChat.nick;
-		for(int i=1;i<params.length;i++){
+		// /MSG requiere algunas cosas extra
+		if(params[0]=="/MSG"){
+			// Añadimos los parametros adicionales
+			params[0] += ";"+ClienteChat.nick+";"+ClienteChat.sala;
+		}
+		for(int i=0;i<params.length;i++){
 			ret += ";"+params[i];
 		}
 		return ret;
