@@ -8,6 +8,7 @@ package es.uniovi;
 public class ClienteChat {
 	static String nick;
 	static String sala = 'pruebas';
+	static SalidaRed out = new SalidaRed();
 	
 	public static void main(String[] args){
 		System.out.println("ClienteChat v1.0");
@@ -20,7 +21,9 @@ public class ClienteChat {
 		
 		nick = args[0];
 		System.out.println("Bienvenido/a "+ nick);
-				
+		
+		// Lanza los hilos
+		HiloEntrada in = new HiloEntrada();
 	}
 
 }
