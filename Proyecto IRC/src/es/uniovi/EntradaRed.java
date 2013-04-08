@@ -33,5 +33,8 @@ public class EntradaRed extends Thread {
 	public void add(Respuesta ans) throws InterruptedException{
 		inQueue.put(ans);
 	}
-
+	
+	public Respuesta remove() throws InterruptedException{
+		return inQueue.take();
+	}
 }
