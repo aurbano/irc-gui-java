@@ -14,12 +14,10 @@ public class HiloEntrada {
 			try {
 				
 				line = text.readLine();
-				if (line.startsWith("/")){
-					cmd=new Comando(line.split(" "));
-				}else{
-					cmd=new Comando(new String[]{"/MSG", line});
-				}
+				// Genera el comando
+				cmd = new Comando(line);
 				
+				// Envia el comando
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

@@ -7,21 +7,24 @@ package es.uniovi;
 public class Comando {
 	String[] params;
 	
-	public Comando(String[] params){
-		this.params = params;
+	public Comando(String text){
+		// Genera el string de parametros:
+		if (text.startsWith("/")){
+			this.params = text.split(" ");
+		}else{
+			// /MSG requiere algunas cosas extra
+			this.params = new String[]{"/MSG",ClienteChat.nick, ClienteChat.sala, text};
+		}
 	}
 	
 	/**
 	 * Devuelve la cadena completa
 	 */
 	public String get(){
-		// /MSG requiere algunas cosas extra
-		if(params[0]=="/MSG"){
-			// Añadimos los parametros adicionales
-			params[0] += ";"+ClienteChat.nick+";"+ClienteChat.sala;
-		}
+		String ret = "";
 		for(int i=0;i<params.length;i++){
-			ret += ";"+params[i];
+			ret += params[i];
+			if(i<params.length-1) ret += ";";
 		}
 		return ret;
 	}
