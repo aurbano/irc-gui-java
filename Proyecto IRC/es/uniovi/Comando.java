@@ -5,12 +5,9 @@ package es.uniovi;
  */
 
 public class Comando {
-	String type;
 	String[] params;
 	
-	public Comando(String type, String[] params){
-		if(type.length()==0) type = "/MSG";
-		this.type = type;
+	public Comando(String[] params){
 		this.params = params;
 	}
 	
@@ -18,7 +15,11 @@ public class Comando {
 	 * Devuelve la cadena completa
 	 */
 	public String get(){
-		String ret = type+ClienteChat.nick;
+		// /MSG requiere algunas cosas extra
+		if(params[0]=="/MSG"){
+			// Añadimos los parametros adicionales
+			params[0] += ";"+ClienteChat.nick+";"+ClienteChat.sala;
+		}
 		for(int i=0;i<params.length;i++){
 			ret += ";"+params[i];
 		}

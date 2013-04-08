@@ -7,6 +7,7 @@ package es.uniovi;
 
 public class ClienteChat {
 	static String nick;
+	static String sala = 'pruebas';
 	
 	public static void main(String[] args){
 		System.out.println("ClienteChat v1.0");
