@@ -4,7 +4,7 @@ import java.io.*;
 /**
  * Espera a que el usuario escriba mensajes, y los envia al buffer de salida
  */
-public class HiloEntrada {
+public class HiloEntrada extends Thread{
 	
 	public HiloEntrada(){
 		// Lanza el hilo
@@ -16,14 +16,16 @@ public class HiloEntrada {
 		String line;
 		Comando cmd;
 		while(true){
-			try {
-				
+			try{
 				line = text.readLine();
 				// Genera el comando
 				cmd = new Comando(line);
 				// Envia el comando
 				ClienteChat.out.send(cmd);
-			} catch (IOException e) {
+				
+			}catch(IOException e){
+				e.printStackTrace();
+			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
 		}

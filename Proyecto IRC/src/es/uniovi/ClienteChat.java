@@ -2,13 +2,11 @@ package es.uniovi;
 
 /**
  *  Cliente de consola de chat
- *
  */
 public class ClienteChat {
 	static String nick;
-	static String sala = 'pruebas';
+	static String sala = "pruebas";
 	static SalidaRed out = new SalidaRed();
-	
 	public static void main(String[] args){
 		System.out.println("ClienteChat v1.0");
 		

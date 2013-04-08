@@ -57,4 +57,42 @@ public class Network extends Thread {
 		testClosed();
 		msgQueue.put(msg);
 	}
+
+	/**
+	* Dispara una excepción si la red está cerrada
+	* 
+	* @throws IllegalStateException si la red está cerrada.
+	*/
+	private void testClosed() throws IllegalStateException {
+		if (closed)
+		throw new IllegalStateException("The network is already closed"); 
+	}
+	
+	/**
+	* Hilo de generación de mensajes aleatorios.
+	* @throws IllegalStateException si la red está cerrada.
+	*/
+	@Override
+	public void run() throws IllegalStateException {
+		int i = 0;
+		testClosed(); 
+		Random random = new Random();
+		try {
+			while (true) {
+				// Dormimos un tiempo aleatorio
+				sleep(random.nextInt(MAX_WAITING_TIME_SECS)*1000);
+				// Generamos el nick del usuario
+				int n = random.nextInt(MAX_USERS) + 1;
+				String nick = "Usuario" + n;
+				String room = ROOM[n%2];
+				String message = "Mensaje número " + i;
+				String msg = nick + ";" + room + ";" + message;
+				// Encolamos
+				msgQueue.put(msg);
+				i = i + 1;
+			}
+		}catch (InterruptedException ex) {
+			// No hacemos nada
+		}
+	}
 }

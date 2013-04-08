@@ -19,7 +19,7 @@ public class SalidaRed extends Thread{
 	 * Guarda comandos en la cola de salida de red
 	 * @param cmd
 	 */
-	public void send(Comando cmd){
+	public void send(Comando cmd) throws InterruptedException{
 		outQueue.put(cmd);
 	}
 	
@@ -29,15 +29,17 @@ public class SalidaRed extends Thread{
 	 */
 	public void run(){
 		Comando c;
-		while(true){
-			// Espera nuevos comandos
-			c = outQueue.take();
-			// Cuando llega alguno intenta enviarlo usando Network
-			try{
-				Network.send(c.get());
-			}catch(Exception e){
-				e.printStackTrace();
+		Network net = new Network();
+		try{
+			while(true){
+				// Espera nuevos comandos
+				c = outQueue.take();
+				// Cuando llega alguno intenta enviarlo usando Network
+				net.send(c.get());
+				
 			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 }
