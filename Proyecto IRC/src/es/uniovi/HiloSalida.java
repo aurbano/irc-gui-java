@@ -21,7 +21,6 @@ public class HiloSalida extends Thread{
 				resp = ClienteChat.netIn.remove();
 				switch(resp.type){
 				// Mostramos segun el formato especificado
-				
 					case "/MSG":
 						if(resp.params.length > 2){
 							System.out.println(resp.params[0]+"|"+resp.params[1]+"> "+resp.params[2]);
