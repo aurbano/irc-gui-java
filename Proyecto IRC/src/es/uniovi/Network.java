@@ -38,7 +38,7 @@ public class Network extends Thread {
 	/**
 	* Recibe el siguiente mensaje de la red bloqueando el hilo si no hay 
 	* mensajes pendientes.
-	* @return el mensaje recibido.
+	* @return El mensaje recibido.
 	* @throws IllegalStateException si la red está cerrada.
 	* @throws InterruptedException si el hilo es bloqueado mientras espera por un mensaje.
 	*/
@@ -49,7 +49,7 @@ public class Network extends Thread {
 	
 	/**
 	* Envía un mensaje a la red bloqueando el hilo si no hay espacio para enviar mensajes.
-	* @param msg el mensaje a enviar.
+	* @param msg El mensaje a enviar.
 	* @throws IllegalStateException si la red está cerrada.
 	* @throws InterruptedException si el hilo es bloqueado mientras espera por un mensaje.
 	*/
@@ -72,7 +72,6 @@ public class Network extends Thread {
 	* Hilo de generación de mensajes aleatorios.
 	* @throws IllegalStateException si la red está cerrada.
 	*/
-	@Override
 	public void run() throws IllegalStateException {
 		int i = 0;
 		testClosed(); 

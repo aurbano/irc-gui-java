@@ -6,11 +6,16 @@ import java.io.*;
  */
 public class HiloEntrada extends Thread{
 	
+	/**
+	 * Constructor de la clase, lanza el hilo
+	 */
 	public HiloEntrada(){
-		// Lanza el hilo
 		this.start();
 	}
 
+	/**
+	 * Método run
+	 */
 	public void run(){
 		LineNumberReader text = new LineNumberReader (new InputStreamReader(System.in));
 		String line;

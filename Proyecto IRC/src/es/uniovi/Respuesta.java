@@ -1,12 +1,15 @@
 package es.uniovi;
 
+/**
+ * Define los elementos de tipo Respuesta para guardar lo que llega de la red
+ */
 public class Respuesta {
 	String type;
 	String[] params;
 	
 	/**
 	 * Separa el texto recibido, diferenciando entre el tipo y los parámetros.
-	 * @param message , mensaje recibido
+	 * @param Mensaje recibido
 	 */
 	public Respuesta(String message){
 		String[] parts = message.split(";");
@@ -26,6 +29,11 @@ public class Respuesta {
 		}
 	}
 	
+	/**
+	 * Devuelve la respuesta como string, principalmente
+	 * para poder debuggear de manera comoda
+	 * @return El comando completo recibido
+	 */
 	public String toString(){
 		String ret = type;
 		for(int i=0;i<params.length;i++){

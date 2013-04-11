@@ -2,10 +2,11 @@ package es.uniovi;
 
 /**
  * Hilo de salida, espera a que lleguen nuevos mensajes y los muestra por pantalla
+ * también determina cómo tratar cada comando.
  */
 public class HiloSalida extends Thread{
 	/**
-	 * Constructor
+	 * Constructor, lanza el hilo
 	 */
 	public HiloSalida(){
 		this.start();
@@ -20,7 +21,10 @@ public class HiloSalida extends Thread{
 			try{
 				resp = ClienteChat.netIn.remove();
 				switch(resp.type){
-				// Mostramos segun el formato especificado
+				/*
+				 * Implementamos algo de logica para los diferentes comandos
+				 * de cara al siguiente hito.
+				 */
 					case "/MSG":
 						if(resp.params.length > 2){
 							System.out.println(resp.params[0]+"|"+resp.params[1]+"> "+resp.params[2]);

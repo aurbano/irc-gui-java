@@ -1,12 +1,17 @@
 package es.uniovi;
 
 /**
- * Contiene toda la informacion de un comando IRC
+ * Contiene toda la información de un comando IRC
  */
 
 public class Comando {
 	String[] params;
 	
+	/**
+	 * Constructor para la clase Comando
+	 * toma el texto introducido por el usuario como parámetro
+	 * @param Comando introducido por el usuario
+	 */
 	public Comando(String text){
 		// Genera el string de parametros:
 		if (text.startsWith("/")){
@@ -18,7 +23,8 @@ public class Comando {
 	}
 	
 	/**
-	 * Devuelve la cadena completa
+	 * Devuelve el comando como String en el formato adecuado
+	 * @return Comando en string
 	 */
 	public String get(){
 		String ret = "";

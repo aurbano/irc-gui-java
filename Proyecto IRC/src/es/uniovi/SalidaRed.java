@@ -10,14 +10,17 @@ public class SalidaRed extends Thread{
 	
 	private ArrayBlockingQueue<Comando> outQueue;
 	
+	/**
+	 * Constructor de la clase, inicia el buffer de salida y lanza el hilo
+	 */
 	public SalidaRed(){
 		outQueue = new ArrayBlockingQueue<Comando>(20);
 		this.start();
 	}
 	
 	/**
-	 * Guarda comandos en la cola de salida de red
-	 * @param cmd
+	 * Guarda comandos en el buffer de salida de red
+	 * @param cmd Comando a guardar en el buffer
 	 */
 	public void send(Comando cmd) throws InterruptedException{
 		outQueue.put(cmd);
