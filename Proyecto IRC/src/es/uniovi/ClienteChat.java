@@ -39,8 +39,8 @@ public class ClienteChat {
 		System.out.println("Bienvenido/a "+ nick);
 		
 		// Lanzamos los hilos
-		HiloEntrada in = new HiloEntrada();
-		HiloSalida out = new HiloSalida();
+		new HiloEntrada();
+		new HiloSalida();
 	}
 
 }
