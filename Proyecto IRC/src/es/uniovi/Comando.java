@@ -1,5 +1,6 @@
 package es.uniovi;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
@@ -28,29 +29,29 @@ public class Comando {
 	/**
 	 * Devuelve el comando como String en el formato adecuado
 	 * @return Comando en string
+	 * @throws UnsupportedEncodingException 
 	 */
-	public byte[] get(){
-		HashMap<String,Integer> tabla = new HashMap<String,Integer>();
-		tabla.put("/MSG", 1);
-		tabla.put("/JOIN", 2);
-		tabla.put("/LEAVE", 3);
-		tabla.put("/NICK", 4);
-		tabla.put("/QUIT", 5);
-		tabla.put("/LIST", 10);
-		tabla.put("/WHO", 11);
+	public byte[] get() throws UnsupportedEncodingException{
+		HashMap<String,Short> tabla = new HashMap<String,Short>();
+		tabla.put("/MSG", (short)1);
+		tabla.put("/JOIN", (short)2);
+		tabla.put("/LEAVE", (short)3);
+		tabla.put("/NICK", (short)4);
+		tabla.put("/QUIT", (short)5);
+		tabla.put("/LIST", (short)10);
+		tabla.put("/WHO", (short)11);
 		
 		String content = "";
 		for(int i=1; i<params.length; i++){
 			content+= params[i];
 		}
-		Integer size = new Integer(content.getBytes().length);
+		Short size = new Short((short)content.getBytes("UTF-8").length);
 		
 		ByteBuffer command = ByteBuffer.allocate(4+size);
 	
-		command.putInt(tabla.get(params[0]));
-		command.putInt(size);
-		command.put(content.getBytes());
-		
+		command.putShort(tabla.get(params[0]));
+		command.putShort(size);
+		command.put(content.getBytes("UTF-8"));
 		return command.array();		
 	}
 }
