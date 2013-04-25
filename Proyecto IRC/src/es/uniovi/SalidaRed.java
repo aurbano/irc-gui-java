@@ -1,5 +1,6 @@
 package es.uniovi;
 
+import java.io.DataOutputStream;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -33,11 +34,12 @@ public class SalidaRed extends Thread{
 	public void run(){
 		Comando c;
 		try{
+			DataOutputStream out = new DataOutputStream(ClienteChat.s.getOutputStream());
 			while(true){
 				// Espera nuevos comandos
 				c = outQueue.take();
-				// Cuando llega alguno intenta enviarlo usando Network
-				//ClienteChat.net.send(c.get());
+				// Cuando llega alguno intenta enviarlo
+				out.write(c.get());
 				
 			}
 		}catch(Exception e){

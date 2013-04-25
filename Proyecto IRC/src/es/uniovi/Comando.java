@@ -22,7 +22,7 @@ public class Comando {
 			this.params = text.split(" ");
 		}else{
 			// /MSG requiere algunas cosas extra
-			this.params = new String[]{"/MSG",ClienteChat.nick, ClienteChat.sala, text};
+			this.params = new String[]{"/MSG", text, ClienteChat.sala};
 		}
 	}
 	
@@ -41,17 +41,46 @@ public class Comando {
 		tabla.put("/LIST", (short)10);
 		tabla.put("/WHO", (short)11);
 		
-		String content = "";
-		for(int i=1; i<params.length; i++){
-			content+= params[i];
-		}
-		Short size = new Short((short)content.getBytes("UTF-8").length);
+		// La "carga" para calcular el tamaño
+		String content = params[1];
+		if(params[0]=="/MSG") content += params[2];
+		
+		Short size = new Short((short)(content.getBytes("UTF-8").length + params.length));
 		
 		ByteBuffer command = ByteBuffer.allocate(4+size);
 	
 		command.putShort(tabla.get(params[0]));
 		command.putShort(size);
-		command.put(content.getBytes("UTF-8"));
+		if(size>0){
+			command.putShort((short)(params.length-1));
+			System.out.println(asHex(command.array()));
+			if(params[0]=="/MSG"){
+				command.putShort((short)params[2].getBytes("UTF-8").length);
+				System.out.println(asHex(command.array()));
+				command.put(params[2].getBytes("UTF-8"));
+				System.out.println(asHex(command.array()));
+				command.putShort((short)params[1].getBytes("UTF-8").length);
+				System.out.println(asHex(command.array()));
+				command.put(params[1].getBytes("UTF-8"));
+				System.out.println(asHex(command.array()));
+			}else{
+				command.putShort((short)params[1].getBytes("UTF-8").length);
+				command.put(params[1].getBytes("UTF-8"));
+			}
+		}
 		return command.array();		
 	}
+	
+	 public static String asHex(byte buf[])
+     {
+             StringBuffer strbuf = new StringBuffer(buf.length * 2);
+
+             for(int i=0; i< buf.length; i++)
+             {
+                     if(((int) buf[i] & 0xff) < 0x10)
+                             strbuf.append("0");
+                     strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
+             }
+             return strbuf.toString();
+     }
 }

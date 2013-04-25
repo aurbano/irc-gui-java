@@ -36,7 +36,7 @@ public class HiloSalida extends Thread{
 						break;
 						
 					default:
-						System.out.println("> Unknown type: "+resp.params);
+						System.out.println("> Unknown type ("+resp.type+") Status="+resp.status+". Mensaje: "+resp.params);
 				}
 			}catch(Exception e){
 				e.printStackTrace();
