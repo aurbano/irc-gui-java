@@ -26,8 +26,7 @@ public class HiloSalida extends Thread{
 				}
 				switch(resp.type){
 				/*
-				 * Implementamos algo de logica para los diferentes comandos
-				 * de cara al siguiente hito.
+				 * Implementamos algo de logica para los diferentes comandos.
 				 */
 					case "MSG":
 						if(resp.params.length > 2){
@@ -49,10 +48,18 @@ public class HiloSalida extends Thread{
 					case "QUIT":
 						System.out.println(">> "+resp.params[0]+" se ha desconectado.");
 					case "LIST":
-						System.out.println(">> Salas: "+resp.params[0]);
+						String[] aux = separar(resp.params[0]);
+						System.out.println(">> Salas: ");
+						for(int i=0; i<aux.length; i++){
+							System.out.println("- "+aux[i]);					
+						}
 						break;
 					case "WHO":
-						System.out.println(">> Usuarios en "+resp.params[0]+": "+resp.params[1]);
+						String[] aux2 = separar(resp.params[1]);
+						System.out.println(">> Usuarios en "+resp.params[0]+": ");
+						for(int i=0; i<aux2.length; i++){
+							System.out.println("- "+aux2[i]);					
+						}
 						break;
 					case "HELLO":
 						System.out.println(">> "+resp.params[0]);
@@ -71,5 +78,9 @@ public class HiloSalida extends Thread{
 	
 	public void error(Respuesta resp){
 		System.err.println(">> Servidor: "+resp.params[0]);
+	}
+	public String[] separar(String parametros){
+		String[] ret = parametros.split(";");
+		return ret;
 	}
 }

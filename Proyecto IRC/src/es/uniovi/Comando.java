@@ -27,8 +27,8 @@ public class Comando {
 	}
 	
 	/**
-	 * Devuelve el comando como String en el formato adecuado
-	 * @return Comando en string
+	 * Devuelve el comando como array de bytes en el formato del protocolo
+	 * @return Array de bytes con el comando y el mensaje
 	 * @throws UnsupportedEncodingException 
 	 */
 	public byte[] get() throws UnsupportedEncodingException{
@@ -68,17 +68,4 @@ public class Comando {
 		}
 		return command.array();		
 	}
-	
-	 public static String asHex(byte buf[])
-     {
-             StringBuffer strbuf = new StringBuffer(buf.length * 2);
-
-             for(int i=0; i< buf.length; i++)
-             {
-                     if(((int) buf[i] & 0xff) < 0x10)
-                             strbuf.append("0");
-                     strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
-             }
-             return strbuf.toString();
-     }
 }

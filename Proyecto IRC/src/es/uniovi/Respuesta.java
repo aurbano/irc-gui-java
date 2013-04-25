@@ -11,7 +11,7 @@ public class Respuesta {
 	String[] params;
 	
 	/**
-	 * Separa el texto recibido, diferenciando entre el tipo y los parámetros.
+	 * Separa el texto recibido, diferenciando entre el tipo, estado y los parámetros.
 	 * @param Mensaje recibido
 	 */
 	public Respuesta(int code, int status, String[] message){

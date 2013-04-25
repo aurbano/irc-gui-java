@@ -34,7 +34,7 @@ public class ClienteChat {
 	/**
 	 * Método principal del Cliente, muestra por pantalla algo de información
 	 * y lanza los hilos de entrada por teclado y salida por pantalla.
-	 * @param args Es necesario especificar el nick por parametro.
+	 * @param args Es necesario especificar IP y puerto del servidor.
 	 */
 	public static void main(String[] args){
 		System.out.println("ClienteChat v2.0");
