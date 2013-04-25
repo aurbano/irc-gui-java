@@ -1,6 +1,7 @@
 package es.uniovi;
 
 import java.io.*;
+import java.nio.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -21,18 +22,35 @@ public class EntradaRed extends Thread {
 	
 	public void run(){
 		String message;
+		int status, code;
 		Respuesta res;
 		try{
-			BufferedReader in = new BufferedReader(new InputStreamReader(ClienteChat.s.getInputStream()));
+			//BufferedReader in = new BufferedReader(new InputStreamReader(ClienteChat.s.getInputStream()));
+			//LineNumberReader in = new LineNumberReader( new InputStreamReader(ClienteChat.s.getInputStream()));
+			//ObjectInputStream in = new ObjectInputStream(ClienteChat.s.getInputStream());
+			DataInputStream in = new DataInputStream(ClienteChat.s.getInputStream());
 			while(true){
 				try{
-					message = in.readLine();
-					System.out.println("Rewcibido");
-					System.out.println(message);
-					/*if(message.length() > 0){
-						res = new Respuesta(message);
-						add(res);
-					}*/
+					// Lee los 2 primeros bytes
+					status = in.readByte();
+					code = in.readByte();
+				
+					short length = in.readShort();
+					byte[] content = new byte[length];
+					// Lee la respuesta
+					in.readFully(content);
+					message = new String(content,"UTF-8");
+					
+					// Guardamos el mensaje recibido en la cola
+					res = new Respuesta(code,status,message);
+					add(res);
+					/*
+					System.out.println("Recibido:");
+					System.out.println("	Status= "+status);
+					System.out.println("	Code= "+code);
+					System.out.println("	Tamaño="+length);
+					System.out.println("	Mensaje: "+new String(content,"UTF-8"));
+					System.out.println("-----------");*/
 				}catch(Exception e){
 					e.printStackTrace();
 				}

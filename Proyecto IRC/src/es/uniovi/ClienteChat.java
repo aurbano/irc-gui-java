@@ -20,8 +20,8 @@ public class ClienteChat {
 	/**
 	 * IP del servidor
 	 */
-	static String host = "localhost";
-	static int port = 69;
+	static String host;
+	static int port;
 	/*
 	 * Lanzamos algunos hilos como estáticos para poder acceder
 	 * a ellos desde los demás.
@@ -49,7 +49,6 @@ public class ClienteChat {
 		
 		try{
 			s = new Socket(host, port);
-			System.out.println("Bienvenido/a "+ nick);
 			
 			// Lanzamos los hilos
 			netOut = new SalidaRed();
