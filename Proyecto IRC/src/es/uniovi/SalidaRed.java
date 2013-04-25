@@ -35,7 +35,7 @@ public class SalidaRed extends Thread{
 		Comando c;
 		try{
 			DataOutputStream out = new DataOutputStream(ClienteChat.s.getOutputStream());
-			while(true){
+			while(!ClienteChat.quit){
 				// Espera nuevos comandos
 				c = outQueue.take();
 				// Cuando llega alguno intenta enviarlo

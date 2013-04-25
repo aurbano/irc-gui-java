@@ -24,6 +24,7 @@ public class Comando {
 			// /MSG requiere algunas cosas extra
 			this.params = new String[]{"/MSG", text, ClienteChat.sala};
 		}
+		params[0] = params[0].toUpperCase();
 	}
 	
 	/**

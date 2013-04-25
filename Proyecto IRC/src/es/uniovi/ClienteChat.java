@@ -22,6 +22,10 @@ public class ClienteChat {
 	 */
 	static String host;
 	static int port;
+	/**
+	 * Finaliza la sesion
+	 */
+	static boolean quit = false;
 	/*
 	 * Lanzamos algunos hilos como estáticos para poder acceder
 	 * a ellos desde los demás.

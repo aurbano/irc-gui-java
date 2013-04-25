@@ -17,7 +17,7 @@ public class HiloSalida extends Thread{
 	 */
 	public void run(){
 		Respuesta resp;
-		while(true){
+		while(!ClienteChat.quit){
 			try{
 				resp = ClienteChat.netIn.remove();
 				if(resp.status==3){
@@ -47,6 +47,9 @@ public class HiloSalida extends Thread{
 						break;
 					case "QUIT":
 						System.out.println(">> "+resp.params[0]+" se ha desconectado.");
+						ClienteChat.s.close();
+						ClienteChat.quit = true;
+						break;
 					case "LIST":
 						String[] aux = separar(resp.params[0]);
 						System.out.println(">> Salas: ");

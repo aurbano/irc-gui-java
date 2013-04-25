@@ -20,7 +20,7 @@ public class HiloEntrada extends Thread{
 		LineNumberReader text = new LineNumberReader (new InputStreamReader(System.in));
 		String line;
 		Comando cmd;
-		while(true){
+		while(!ClienteChat.quit){
 			try{
 				line = text.readLine();
 				// Genera el comando

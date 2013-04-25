@@ -25,11 +25,8 @@ public class EntradaRed extends Thread {
 		int status, code;
 		Respuesta res;
 		try{
-			//BufferedReader in = new BufferedReader(new InputStreamReader(ClienteChat.s.getInputStream()));
-			//LineNumberReader in = new LineNumberReader( new InputStreamReader(ClienteChat.s.getInputStream()));
-			//ObjectInputStream in = new ObjectInputStream(ClienteChat.s.getInputStream());
 			DataInputStream in = new DataInputStream(ClienteChat.s.getInputStream());
-			while(true){
+			while(!ClienteChat.quit){
 				try{
 					// Lee los 2 primeros bytes
 					status = in.readByte();
@@ -63,8 +60,12 @@ public class EntradaRed extends Thread {
 					// Guardamos el mensaje recibido en la cola
 					res = new Respuesta(code,status,params);
 					add(res);
+				}catch(EOFException e){
+					ClienteChat.quit = true;
+					break;
 				}catch(Exception e){
 					e.printStackTrace();
+					ClienteChat.quit = true;
 					break;
 				}
 			}
