@@ -38,12 +38,15 @@ public class Comando {
 		tabla.put("/LEAVE", (short)3);
 		tabla.put("/NICK", (short)4);
 		tabla.put("/QUIT", (short)5);
-		tabla.put("/LIST", (short)10);
-		tabla.put("/WHO", (short)11);
+		tabla.put("/LIST", (short)16);
+		tabla.put("/WHO", (short)17);
 		
 		// La "carga" para calcular el tamaño
-		String content = params[1];
-		if(params[0]=="/MSG") content += params[2];
+		String content = "";
+		if(params.length>1){
+			content = params[1];
+			if(params[0]=="/MSG") content += params[2];
+		}
 		
 		Short size = new Short((short)(content.getBytes("UTF-8").length + params.length*2));
 		
@@ -51,7 +54,7 @@ public class Comando {
 	
 		command.putShort(tabla.get(params[0]));
 		command.putShort(size);
-		if(size>0){
+		if(params.length > 1 && size>0){
 			command.putShort((short)(params.length-1));
 			if(params[0]=="/MSG"){
 				command.putShort((short)params[2].getBytes("UTF-8").length);

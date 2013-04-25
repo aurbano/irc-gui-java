@@ -8,13 +8,13 @@ import java.util.*;
 public class Respuesta {
 	String type;
 	int status;
-	String params;
+	String[] params;
 	
 	/**
 	 * Separa el texto recibido, diferenciando entre el tipo y los parámetros.
 	 * @param Mensaje recibido
 	 */
-	public Respuesta(int code, int status, String message){
+	public Respuesta(int code, int status, String[] message){
 		HashMap<Integer,String> tabla = new HashMap<Integer,String>();
 		tabla.put(0,"OTROS");
 		tabla.put(1, "MSG");

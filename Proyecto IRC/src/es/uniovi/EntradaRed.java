@@ -34,23 +34,35 @@ public class EntradaRed extends Thread {
 					// Lee los 2 primeros bytes
 					status = in.readByte();
 					code = in.readByte();
-				
+					// Lee el tamaño de la carga
 					short length = in.readShort();
-					byte[] content = new byte[length];
-					// Lee la respuesta
-					in.readFully(content);
-					message = new String(content,"UTF-8");
+					// Lee el numero de parametros
+					short paramsNum = in.readShort();
+					short paramLength;
+					String[] params = new String[paramsNum];
+					for(int i=0;i<paramsNum;i++){
+						paramLength = in.readShort();
+						byte[] param = new byte[paramLength];
+						in.readFully(param);
+						params[i] = new String(param,"UTF-8");
+						
+						/*//Debug info
+						System.out.println("Param "+i+": Length= "+paramLength);
+						System.out.println("	"+params[i]);//*/
+					}
 					
-					// Guardamos el mensaje recibido en la cola
-					res = new Respuesta(code,status,message);
-					add(res);
-					/*
+					/*// Debug info
 					System.out.println("Recibido:");
 					System.out.println("	Status= "+status);
 					System.out.println("	Code= "+code);
 					System.out.println("	Tamaño="+length);
-					System.out.println("	Mensaje: "+new String(content,"UTF-8"));
-					System.out.println("-----------");*/
+					System.out.println("	Params= "+paramsNum);
+					System.out.println("	Mensaje: "+params[0]);
+					System.out.println("-----------");//*/
+					
+					// Guardamos el mensaje recibido en la cola
+					res = new Respuesta(code,status,params);
+					add(res);
 				}catch(Exception e){
 					e.printStackTrace();
 					break;
