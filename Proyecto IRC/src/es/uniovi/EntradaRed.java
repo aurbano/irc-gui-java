@@ -1,5 +1,6 @@
 package es.uniovi;
 
+import java.io.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -21,16 +22,23 @@ public class EntradaRed extends Thread {
 	public void run(){
 		String message;
 		Respuesta res;
-		while(true){
-			try{
-				message = ClienteChat.net.recv();
-				if(message.length() > 0){
-					res = new Respuesta(message);
-					add(res);
+		try{
+			BufferedReader in = new BufferedReader(new InputStreamReader(ClienteChat.s.getInputStream()));
+			while(true){
+				try{
+					message = in.readLine();
+					System.out.println("Rewcibido");
+					System.out.println(message);
+					/*if(message.length() > 0){
+						res = new Respuesta(message);
+						add(res);
+					}*/
+				}catch(Exception e){
+					e.printStackTrace();
 				}
-			}catch(Exception e){
-				e.printStackTrace();
 			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 	

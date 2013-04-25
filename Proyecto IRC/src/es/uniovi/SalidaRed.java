@@ -37,7 +37,7 @@ public class SalidaRed extends Thread{
 				// Espera nuevos comandos
 				c = outQueue.take();
 				// Cuando llega alguno intenta enviarlo usando Network
-				ClienteChat.net.send(c.get());
+				//ClienteChat.net.send(c.get());
 				
 			}
 		}catch(Exception e){

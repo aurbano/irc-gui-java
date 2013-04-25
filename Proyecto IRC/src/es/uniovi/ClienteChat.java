@@ -26,9 +26,9 @@ public class ClienteChat {
 	 * Lanzamos algunos hilos como estáticos para poder acceder
 	 * a ellos desde los demás.
 	 */
-	static SalidaRed netOut = new SalidaRed();
-	static EntradaRed netIn = new EntradaRed();
-	static Network net = new Network();
+	static SalidaRed netOut;
+	static EntradaRed netIn;
+	//static Network net = new Network();
 	static Socket s;
 	
 	/**
@@ -52,6 +52,8 @@ public class ClienteChat {
 			System.out.println("Bienvenido/a "+ nick);
 			
 			// Lanzamos los hilos
+			netOut = new SalidaRed();
+			netIn = new EntradaRed();
 			new HiloEntrada();
 			new HiloSalida();
 			
