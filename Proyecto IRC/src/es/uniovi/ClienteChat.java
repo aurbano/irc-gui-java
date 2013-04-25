@@ -12,7 +12,7 @@ public class ClienteChat {
 	/**
 	 * Variable para el nombre de usuario
 	 */
-	static String nick;
+	static String nick = "invitado";
 	/**
 	 * Nombre de la sala actual
 	 */
@@ -37,19 +37,18 @@ public class ClienteChat {
 	 * @param args Es necesario especificar el nick por parametro.
 	 */
 	public static void main(String[] args){
-		System.out.println("ClienteChat v1.0");
+		System.out.println("ClienteChat v2.0");
 		
-		
-		if(args.length<1){
-			System.err.println("Error: No has especificado tu nombre de usuario, pásalo por parámetro.");
+		try{
+			host = args[0];
+			port = new Integer(args[1]);
+		}catch(Exception e){
+			System.err.println("Error: Debes especificar IP del servidor y puerto");
 			System.exit(-1);
 		}
 		
 		try{
-			System.out.println("Conectando...");
 			s = new Socket(host, port);
-			System.out.println("Conectado");
-			nick = args[0];
 			System.out.println("Bienvenido/a "+ nick);
 			
 			// Lanzamos los hilos
