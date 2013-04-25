@@ -1,5 +1,9 @@
 package es.uniovi;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 /**
  *  Cliente de consola de chat, para el hito 1
  *  Lanza los hilos necesarios para el funcionamiento.
@@ -13,6 +17,11 @@ public class ClienteChat {
 	 * Nombre de la sala actual
 	 */
 	static String sala = "pruebas";
+	/**
+	 * IP del servidor
+	 */
+	static String host = "localhost";
+	static int port = 69;
 	/*
 	 * Lanzamos algunos hilos como estáticos para poder acceder
 	 * a ellos desde los demás.
@@ -20,6 +29,7 @@ public class ClienteChat {
 	static SalidaRed netOut = new SalidaRed();
 	static EntradaRed netIn = new EntradaRed();
 	static Network net = new Network();
+	static Socket s;
 	
 	/**
 	 * Método principal del Cliente, muestra por pantalla algo de información
@@ -35,12 +45,20 @@ public class ClienteChat {
 			System.exit(-1);
 		}
 		
-		nick = args[0];
-		System.out.println("Bienvenido/a "+ nick);
-		
-		// Lanzamos los hilos
-		new HiloEntrada();
-		new HiloSalida();
+		try{
+			System.out.println("Conectando...");
+			s = new Socket(host, port);
+			System.out.println("Conectado");
+			nick = args[0];
+			System.out.println("Bienvenido/a "+ nick);
+			
+			// Lanzamos los hilos
+			new HiloEntrada();
+			new HiloSalida();
+			
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 }
