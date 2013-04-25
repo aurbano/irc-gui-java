@@ -45,7 +45,7 @@ public class Comando {
 		String content = params[1];
 		if(params[0]=="/MSG") content += params[2];
 		
-		Short size = new Short((short)(content.getBytes("UTF-8").length + params.length));
+		Short size = new Short((short)(content.getBytes("UTF-8").length + params.length*2));
 		
 		ByteBuffer command = ByteBuffer.allocate(4+size);
 	
@@ -53,16 +53,11 @@ public class Comando {
 		command.putShort(size);
 		if(size>0){
 			command.putShort((short)(params.length-1));
-			System.out.println(asHex(command.array()));
 			if(params[0]=="/MSG"){
 				command.putShort((short)params[2].getBytes("UTF-8").length);
-				System.out.println(asHex(command.array()));
 				command.put(params[2].getBytes("UTF-8"));
-				System.out.println(asHex(command.array()));
 				command.putShort((short)params[1].getBytes("UTF-8").length);
-				System.out.println(asHex(command.array()));
 				command.put(params[1].getBytes("UTF-8"));
-				System.out.println(asHex(command.array()));
 			}else{
 				command.putShort((short)params[1].getBytes("UTF-8").length);
 				command.put(params[1].getBytes("UTF-8"));
