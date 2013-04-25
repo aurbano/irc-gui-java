@@ -1,5 +1,8 @@
 package es.uniovi;
 
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+
 /**
  * Contiene toda la información de un comando IRC
  */
@@ -26,12 +29,28 @@ public class Comando {
 	 * Devuelve el comando como String en el formato adecuado
 	 * @return Comando en string
 	 */
-	public String get(){
-		String ret = "";
-		for(int i=0;i<params.length;i++){
-			ret += params[i];
-			if(i<params.length-1) ret += ";";
+	public byte[] get(){
+		HashMap<String,Integer> tabla = new HashMap<String,Integer>();
+		tabla.put("/MSG", 1);
+		tabla.put("/JOIN", 2);
+		tabla.put("/LEAVE", 3);
+		tabla.put("/NICK", 4);
+		tabla.put("/QUIT", 5);
+		tabla.put("/LIST", 10);
+		tabla.put("/WHO", 11);
+		
+		String content = "";
+		for(int i=1; i<params.length; i++){
+			content+= params[i];
 		}
-		return ret;
+		Integer size = new Integer(content.getBytes().length);
+		
+		ByteBuffer command = ByteBuffer.allocate(4+size);
+	
+		command.putInt(tabla.get(params[0]));
+		command.putInt(size);
+		command.put(content.getBytes());
+		
+		return command.array();		
 	}
 }
