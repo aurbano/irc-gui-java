@@ -35,12 +35,31 @@ public class HiloSalida extends Thread{
 						}
 						break;
 					case "JOIN":
-						
+						System.out.println(">> "+resp.params[0]+" se ha unido a la sala "+ resp.params[1]);
+						ClienteChat.sala = resp.params[1];
+						break;
+					case "LEAVE":
+						System.out.println(">> "+resp.params[0]+" ha abandonado la sala "+ resp.params[1]);
+						ClienteChat.sala = "";
+						break;
+					case "NICK":
+						System.out.println(">> "+resp.params[0]+" ha cambiado su nick a "+ resp.params[1]);
+						ClienteChat.nick=resp.params[1];
+						break;
+					case "QUIT":
+						System.out.println(">> "+resp.params[0]+" se ha desconectado.");
+					case "LIST":
+						System.out.println(">> Salas: "+resp.params[0]);
+						break;
+					case "WHO":
+						System.out.println(">> Usuarios en "+resp.params[0]+": "+resp.params[1]);
 						break;
 					case "HELLO":
 						System.out.println(">> "+resp.params[0]);
 						break;
-						
+					case "OTROS":
+						error(resp);
+						break;
 					default:
 						System.out.println(">> Unknown type ("+resp.type+") Status="+resp.status+". Mensaje: "+resp.params[0]);
 				}

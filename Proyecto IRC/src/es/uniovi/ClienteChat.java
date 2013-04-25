@@ -12,11 +12,11 @@ public class ClienteChat {
 	/**
 	 * Variable para el nombre de usuario
 	 */
-	static String nick = "invitado";
+	static String nick = "Anonimo";
 	/**
 	 * Nombre de la sala actual
 	 */
-	static String sala = "pruebas";
+	static String sala = "";
 	/**
 	 * IP del servidor
 	 */
