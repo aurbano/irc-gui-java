@@ -18,22 +18,27 @@ public class HiloEntrada extends Thread{
 	 */
 	public void run(){
 		LineNumberReader text = new LineNumberReader (new InputStreamReader(System.in));
-		String line;
+		String line = "/NICK ";
 		Comando cmd;
-		while(!ClienteChat.quit){
-			try{
+		try{
+		System.out.println("Introduce el nick: ");
+		line += text.readLine();
+		cmd = new Comando(line);
+		ClienteChat.netOut.send(cmd);
+		
+			while(!ClienteChat.quit){
 				line = text.readLine();
 				// Genera el comando
 				cmd = new Comando(line);
 				// Envia el comando
 				ClienteChat.netOut.send(cmd);
-				
+				}
 			}catch(IOException e){
 				e.printStackTrace();
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
-		}
+		
 	
 		
 	}
