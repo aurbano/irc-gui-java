@@ -61,7 +61,7 @@ public class ClienteChat {
 			new HiloSalida();
 			
 		}catch(IOException e){
-			e.printStackTrace();
+			System.err.println("No se puede conectar con el servidor");
 		}
 	}
 
