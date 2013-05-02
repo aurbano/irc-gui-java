@@ -2,7 +2,6 @@ package es.uniovi;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  *  Cliente de consola de chat, para el hito 1

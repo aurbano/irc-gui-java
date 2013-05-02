@@ -1,7 +1,6 @@
 package es.uniovi;
 
 import java.io.*;
-import java.nio.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -21,7 +20,6 @@ public class EntradaRed extends Thread {
 	}
 	
 	public void run(){
-		String message;
 		int status, code;
 		Respuesta res;
 		try{
@@ -32,7 +30,7 @@ public class EntradaRed extends Thread {
 					status = in.readByte();
 					code = in.readByte();
 					// Lee el tamaño de la carga
-					short length = in.readShort();
+					in.readShort();
 					// Lee el numero de parametros
 					short paramsNum = in.readShort();
 					short paramLength;
