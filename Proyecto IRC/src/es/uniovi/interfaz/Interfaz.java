@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.BoxLayout;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import java.awt.BorderLayout;
@@ -20,6 +21,9 @@ import java.awt.GridBagConstraints;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.SystemColor;
+import javax.swing.JSeparator;
+import javax.swing.JScrollBar;
+import javax.swing.ScrollPaneConstants;
 
 public class Interfaz {
 
@@ -82,15 +86,25 @@ public class Interfaz {
 		JPanel footerRight = new JPanel();
 		footerRight.setBackground(Color.WHITE);
 		footer.add(footerRight, BorderLayout.EAST);
+		footerRight.setLayout(new BoxLayout(footerRight, BoxLayout.X_AXIS));
 		
-		JButton send = new JButton("madafaka");
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.WHITE);
+		footerRight.add(panel_1);
+		
+		JButton send = new JButton("Enviar");
 		send.setFont(new Font("Georgia", Font.PLAIN, 20));
 		send.setBackground(SystemColor.text);
 		footerRight.add(send);
 		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		footerRight.add(panel);
+		
 		JPanel footerSeparator = new JPanel();
 		footerSeparator.setBackground(Color.WHITE);
 		footer.add(footerSeparator, BorderLayout.NORTH);
+		footerSeparator.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JPanel bottomMargin = new JPanel();
 		bottomMargin.setBackground(SystemColor.text);
@@ -100,7 +114,7 @@ public class Interfaz {
 		header.setBackground(Color.WHITE);
 		frame.getContentPane().add(header, BorderLayout.NORTH);
 		
-		JLabel lblNewLabel = new JLabel("ClienteChat vNegrata");
+		JLabel lblNewLabel = new JLabel("ClienteChat v3");
 		lblNewLabel.setFont(new Font("Georgia", Font.PLAIN, 22));
 		header.add(lblNewLabel);
 		
@@ -114,15 +128,20 @@ public class Interfaz {
 		content.add(contentLeft, BorderLayout.CENTER);
 		contentLeft.setLayout(new BorderLayout(0, 0));
 		
-		JTextArea chat = new JTextArea();
-		chat.setBackground(SystemColor.control);
-		chat.setRows(13);
-		chat.setColumns(50);
-		contentLeft.add(chat);
-		
 		JPanel chatSeparator = new JPanel();
 		chatSeparator.setBackground(SystemColor.text);
 		contentLeft.add(chatSeparator, BorderLayout.WEST);
+		
+		JTextPane chat = new JTextPane();
+		//txtpnchevi.setEditable(false);
+		chat.setContentType("text/html");
+		chat.setBackground(SystemColor.control);
+		contentLeft.add(chat, BorderLayout.CENTER);
+		
+		JScrollPane scrollBar = new JScrollPane(chat);
+		scrollBar.setEnabled(false);
+		scrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		contentLeft.add(scrollBar, BorderLayout.CENTER);
 		
 		JPanel contentRight = new JPanel();
 		contentRight.setBackground(Color.WHITE);
@@ -134,10 +153,16 @@ public class Interfaz {
 		contentRight.add(usersSeparator);
 		
 		JTextArea users = new JTextArea();
+		users.setEditable(false);
+		users.setLineWrap(true);
 		users.setBackground(SystemColor.control);
 		users.setColumns(10);
 		users.setRows(10);
 		contentRight.add(users);
+		
+		JScrollPane scrollPane = new JScrollPane(users);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		contentRight.add(scrollPane);
 		
 		JPanel usersRightSeparator = new JPanel();
 		usersRightSeparator.setBackground(SystemColor.text);
