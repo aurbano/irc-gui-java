@@ -30,48 +30,49 @@ public class HiloSalida extends Thread{
 				 */
 					case "MSG":
 						if(resp.params.length > 2){
-							System.out.println(resp.params[1]+"|"+resp.params[0]+"> " +resp.params[2]);
+							ClienteChat.println("<span style=\"color:orange\">"+resp.params[1]+"</span> | <span style=\"color:green\">"+resp.params[0]+"</span> &gt; " +resp.params[2]);
 						}
 						break;
 					case "JOIN":
-						System.out.println(">> "+resp.params[0]+" se ha unido a la sala "+ resp.params[1]);
+						ClienteChat.println("&gt;&gt; <i style=\"color:green\">"+resp.params[0]+"</i> se ha unido a la sala <i style=\"color:orange\">"+ resp.params[1]+ "</i>");
 						ClienteChat.sala = resp.params[1];
 						break;
 					case "LEAVE":
-						System.out.println(">> "+resp.params[0]+" ha abandonado la sala "+ resp.params[1]);
+						ClienteChat.println("&gt;&gt; <i style=\"color:green\">"+resp.params[0]+"</i> ha abandonado la sala <i style=\"color:orange\">"+ resp.params[1]+ "</i>");
 						ClienteChat.sala = "";
 						break;
 					case "NICK":
-						System.out.println(">> "+resp.params[0]+" ha cambiado su nick a "+ resp.params[1]);
+						ClienteChat.println("&gt;&gt; <i style=\"color:blue\">"+resp.params[0]+"</i> ha cambiado su nick a <i style=\"color:green\">"+ resp.params[1] + "</i>");
 						ClienteChat.nick=resp.params[1];
 						break;
 					case "QUIT":
-						System.out.println(">> "+resp.params[0]+" se ha desconectado.");
+						ClienteChat.println("&gt;&gt; "+resp.params[0]+" se ha desconectado.");
 						ClienteChat.s.close();
 						ClienteChat.quit = true;
 						break;
 					case "LIST":
 						String[] aux = separar(resp.params[0]);
-						System.out.println(">> Salas: ");
+						ClienteChat.println(">> Salas:");
 						for(int i=0; i<aux.length; i++){
-							System.out.println("- "+aux[i]);					
+							ClienteChat.println("&nbsp;&nbsp;&nbsp;- "+aux[i]);					
 						}
 						break;
 					case "WHO":
 						String[] aux2 = separar(resp.params[1]);
-						System.out.println(">> Usuarios en "+resp.params[0]+": ");
+						String out = "&gt;&gt; Usuarios en "+resp.params[0]+": <ul style=\"margin:0; padding:0\">";
 						for(int i=0; i<aux2.length; i++){
-							System.out.println("- "+aux2[i]);					
+							out += "<li style=\"margin: 0;\">"+aux2[i]+"</li>";					
 						}
+						ClienteChat.println(out+"</ul>");
 						break;
 					case "HELLO":
-						System.out.println(">> "+resp.params[0]);
+						ClienteChat.println("&gt;&gt; "+resp.params[0]);
 						break;
 					case "OTROS":
 						error(resp);
 						break;
 					default:
-						System.out.println(">> Unknown type ("+resp.type+") Status="+resp.status+". Mensaje: "+resp.params[0]);
+						ClienteChat.println("&gt;&gt; <span style=\"color:red\">Unknown command ("+resp.type+")</span> Status="+resp.status+". Mensaje: "+resp.params[0]);
 				}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -80,7 +81,7 @@ public class HiloSalida extends Thread{
 	}
 	
 	public void error(Respuesta resp){
-		System.err.println(">> Servidor: "+resp.params[0]);
+		ClienteChat.println("<b style=\"color:blue\">&gt;&gt;</b> <b style=\"color:red\">Error: "+resp.params[0]+"</b>");
 	}
 	public String[] separar(String parametros){
 		String[] ret = parametros.split(";");

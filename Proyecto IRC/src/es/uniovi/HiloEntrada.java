@@ -1,10 +1,14 @@
 package es.uniovi;
 import java.io.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
- * Espera a que el usuario escriba mensajes, y los envia al buffer de salida
+ * Espera a que el usuario escriba mensajes, y los envia al buffer de salida.
+ * Los mensajes que escribe el usuario llegan a través del buffer messageQueue.
  */
 public class HiloEntrada extends Thread{
+	
+	ArrayBlockingQueue<String> messageQueue = new ArrayBlockingQueue<String>(20);
 	
 	/**
 	 * Constructor de la clase, lanza el hilo
@@ -17,24 +21,16 @@ public class HiloEntrada extends Thread{
 	 * Método run
 	 */
 	public void run(){
-		LineNumberReader text = new LineNumberReader (new InputStreamReader(System.in));
-		String line = "/NICK ";
+		String line;
 		Comando cmd;
 		try{
-		System.out.println("Introduce el nick: ");
-		line += text.readLine();
-		cmd = new Comando(line);
-		ClienteChat.netOut.send(cmd);
-		
 			while(!ClienteChat.quit){
-				line = text.readLine();
+				line = messageQueue.take();
 				// Genera el comando
 				cmd = new Comando(line);
 				// Envia el comando
 				ClienteChat.netOut.send(cmd);
 				}
-			}catch(IOException e){
-				e.printStackTrace();
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
