@@ -175,8 +175,19 @@ public class ClienteChat {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
 		footerRight.add(panel_1);
-		
+
 		JButton send = new JButton("Enviar");
+		send.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					entrada.messageQueue.put(msg.getText());
+					msg.setText("");
+				}catch(Exception e){
+					// Cola llena
+					System.out.println("Cola de entrada llena");
+				}
+			}
+		});
 		send.setFont(new Font("Georgia", Font.PLAIN, 20));
 		send.setBackground(SystemColor.text);
 		footerRight.add(send);
