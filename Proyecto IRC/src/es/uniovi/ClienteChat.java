@@ -15,7 +15,8 @@ public class ClienteChat {
 	
 	private JFrame frame;
 	private JTextField msg;
-	static JTextPane chat;
+	private JTabbedPane tabs;
+	static ChatArea chat;
 	
 	/**
 	 * Variable para el nombre de usuario
@@ -97,8 +98,29 @@ public class ClienteChat {
 	}
 	
 	public static void println(String text){
-		memory += text+"<br />";
-		chat.setText("<html><head></head><body>"+memory+"</body></html>");
+		//memory += text+"<br />";
+		//chat.setText("<html><head></head><body>"+memory+"</body></html>");
+		chat.append(text);
+	}
+	
+	private ChatArea addTab(String name){
+		JPanel tab = new JPanel();
+		
+				tabs.add(name, tab);
+				tab.setLayout(new BorderLayout(0, 0));
+		
+		ChatArea chat = new ChatArea();
+		//txtpnchevi.setEditable(false);
+		chat.setContentType("text/html");
+		chat.setBackground(SystemColor.control);
+		tab.add(chat, BorderLayout.CENTER);
+		
+		JScrollPane scrollBar = new JScrollPane(chat);
+		scrollBar.setEnabled(false);
+		scrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		tab.add(scrollBar);
+		
+		return chat;
 	}
 	
 	/**
@@ -106,11 +128,13 @@ public class ClienteChat {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle("ClienteChat v3");
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.getContentPane().setFont(new Font("Georgia", Font.PLAIN, 25));
 		frame.setBounds(100, 100, 526, 374);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		frame.setMinimumSize(new Dimension(340, 200));
 		
 		JPanel footer = new JPanel();
 		footer.setBackground(Color.WHITE);
@@ -173,10 +197,21 @@ public class ClienteChat {
 		JPanel header = new JPanel();
 		header.setBackground(Color.WHITE);
 		frame.getContentPane().add(header, BorderLayout.NORTH);
+		header.setLayout(new BorderLayout(0, 0));
+		
+		JMenuBar menuBar = new JMenuBar();
+		header.add(menuBar, BorderLayout.NORTH);
+		
+		JMenu mnNewMenu = new JMenu("ClienteChat");
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Cerrar");
+		mnNewMenu.add(mntmNewMenuItem);
 		
 		JLabel lblNewLabel = new JLabel("ClienteChat v3");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Georgia", Font.PLAIN, 22));
-		header.add(lblNewLabel);
+		header.add(lblNewLabel, BorderLayout.CENTER);
 		
 		JPanel content = new JPanel();
 		content.setBackground(Color.WHITE);
@@ -188,45 +223,64 @@ public class ClienteChat {
 		content.add(contentLeft, BorderLayout.CENTER);
 		contentLeft.setLayout(new BorderLayout(0, 0));
 		
+		tabs = new JTabbedPane();
+		tabs.setUI(new TabDesign());
+		contentLeft.add(tabs);
+		tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		
+		chat = addTab("Acerca");
+		
 		JPanel chatSeparator = new JPanel();
 		chatSeparator.setBackground(SystemColor.text);
 		contentLeft.add(chatSeparator, BorderLayout.WEST);
 		
-		chat = new JTextPane();
-		//txtpnchevi.setEditable(false);
-		chat.setContentType("text/html");
-		chat.setBackground(SystemColor.control);
-		contentLeft.add(chat, BorderLayout.CENTER);
-		
-		JScrollPane scrollBar = new JScrollPane(chat);
-		scrollBar.setEnabled(false);
-		scrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		contentLeft.add(scrollBar, BorderLayout.CENTER);
+		JPanel tabsPanel = new JPanel();
+		contentLeft.add(tabsPanel, BorderLayout.NORTH);
+		tabsPanel.setBackground(Color.WHITE);
+		tabsPanel.setLayout(new BorderLayout(0, 0));
 		
 		JPanel contentRight = new JPanel();
 		contentRight.setBackground(Color.WHITE);
 		content.add(contentRight, BorderLayout.EAST);
-		contentRight.setLayout(new BoxLayout(contentRight, BoxLayout.X_AXIS));
+		contentRight.setLayout(new BorderLayout(0, 0));
+		
+		JPanel titlePanel = new JPanel();
+		titlePanel.setBackground(Color.WHITE);
+		titlePanel.setLayout(new BorderLayout(0, 0));
+		contentRight.add(titlePanel, BorderLayout.NORTH);
+		
+		JPanel usersTopSeparator = new JPanel();
+		usersTopSeparator.setBackground(Color.WHITE);
+		titlePanel.add(usersTopSeparator, BorderLayout.NORTH);
+		
+		JLabel userTitleLabel = new JLabel("Online:");
+		userTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		userTitleLabel.setBackground(Color.WHITE);
+		titlePanel.add(userTitleLabel, BorderLayout.CENTER);
+		
+		JPanel usersPanel = new JPanel();
+		contentRight.add(usersPanel);
+		usersPanel.setLayout(new BoxLayout(usersPanel, BoxLayout.X_AXIS));
 		
 		JPanel usersSeparator = new JPanel();
+		usersPanel.add(usersSeparator);
 		usersSeparator.setBackground(Color.WHITE);
-		contentRight.add(usersSeparator);
 		
 		JTextArea users = new JTextArea();
 		users.setEditable(false);
 		users.setLineWrap(true);
 		users.setBackground(SystemColor.control);
-		users.setColumns(10);
+		users.setColumns(8);
 		users.setRows(10);
-		contentRight.add(users);
+		usersPanel.add(users);
 		
 		JScrollPane scrollPane = new JScrollPane(users);
+		usersPanel.add(scrollPane);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		contentRight.add(scrollPane);
 		
 		JPanel usersRightSeparator = new JPanel();
+		usersPanel.add(usersRightSeparator);
 		usersRightSeparator.setBackground(SystemColor.text);
-		contentRight.add(usersRightSeparator);
 	}
 
 }
