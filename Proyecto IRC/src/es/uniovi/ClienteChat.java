@@ -2,10 +2,14 @@ package es.uniovi;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.*;
 import javax.swing.*;
+import javax.swing.event.*;
+
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 
 /**
  *  Cliente de consola de chat, para el hito 1
@@ -13,7 +17,7 @@ import java.awt.event.ActionEvent;
  */
 public class ClienteChat {
 	
-	private JFrame frame;
+	public static JFrame frame;
 	private JTextField msg;
 	private JTabbedPane tabs;
 	static ChatArea chat;
@@ -21,7 +25,7 @@ public class ClienteChat {
 	/**
 	 * Variable para el nombre de usuario
 	 */
-	static String nick = "Anonimo";
+	static String nick = "";
 	/**
 	 * Nombre de la sala actual
 	 */
@@ -77,14 +81,7 @@ public class ClienteChat {
 					// Bienvenida
 					ClienteChat.println(">> Conectando al servidor...");
 					
-					// Con la ventana abierta
-					s = new Socket(host, port);
-					
-					// Lanzamos los hilos
-					netOut = new SalidaRed();
-					netIn = new EntradaRed();
-					entrada = new HiloEntrada();
-					salida = new HiloSalida();
+					new Config();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -97,11 +94,58 @@ public class ClienteChat {
 		initialize();
 	}
 	
-	public static void println(String text){
-		//memory += text+"<br />";
-		//chat.setText("<html><head></head><body>"+memory+"</body></html>");
-		chat.append(text);
+	/**
+	 * Finaliza la ejecución
+	 */
+	public static void close(){
+		try{
+    		ClienteChat.netOut.send(new Comando("/QUIT"));
+    	}catch(Exception ex){
+    		System.out.println("No se pudo enviar el /QUIT");
+    	}
 	}
+	
+	/**
+	 * Cierra la aplication
+	 */
+	public static void finish(){
+		ClienteChat.quit = true;
+    	//netIn.termina();
+    	//netOut.termina();
+    	ClienteChat.frame.dispose();
+    	System.exit(0);
+	}
+
+
+	/**
+	 * Muestra un mensaje por la pantalla
+	 * @param t
+	 */
+	public static void println(String t){
+		final String text = t;
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				chat.append(text);
+			}
+		});
+	}
+	
+	/**
+	 * Inicia la conexion al servidor.
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
+	static void connect() throws UnknownHostException, IOException{
+		// Intenta conectarse
+		s = new Socket(host, port);
+		
+		// Lanzamos los hilos
+		netOut = new SalidaRed();
+		netIn = new EntradaRed();
+		entrada = new HiloEntrada();
+		salida = new HiloSalida();
+	}
+
 	
 	private ChatArea addTab(String name){
 		JPanel tab = new JPanel();
@@ -239,7 +283,7 @@ public class ClienteChat {
 		contentLeft.add(tabs);
 		tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
-		chat = addTab("Acerca");
+		chat = addTab("Principal");
 		
 		JPanel chatSeparator = new JPanel();
 		chatSeparator.setBackground(SystemColor.text);
@@ -292,6 +336,15 @@ public class ClienteChat {
 		JPanel usersRightSeparator = new JPanel();
 		usersPanel.add(usersRightSeparator);
 		usersRightSeparator.setBackground(SystemColor.text);
+		
+		// Cambiamos el evento de cierre
+		frame.addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent e){
+		    	ClienteChat.close();
+		    }
+		});
+
 	}
 
 }
