@@ -10,6 +10,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class EntradaRed extends Thread {
 	
 	private ArrayBlockingQueue<Respuesta> inQueue;
+	private boolean running = false;
 	
 	/**
 	 * Constructor de la clase, inicializa el buffer y lanza el hilo.
@@ -17,6 +18,11 @@ public class EntradaRed extends Thread {
 	public EntradaRed(){
 		inQueue = new ArrayBlockingQueue<Respuesta>(20);
 		this.start();
+	}
+	
+	public void termina() {
+		running = false;
+		this.interrupt();
 	}
 	
 	public void run(){
