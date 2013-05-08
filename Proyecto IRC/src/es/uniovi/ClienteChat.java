@@ -253,6 +253,11 @@ public class ClienteChat {
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Cerrar");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ClienteChat.close();
+			}
+		});
 		mnNewMenu.add(mntmNewMenuItem);
 		
 		JLabel lblNewLabel = new JLabel("ClienteChat v3");
