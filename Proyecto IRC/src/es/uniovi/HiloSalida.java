@@ -47,8 +47,10 @@ public class HiloSalida extends Thread{
 						break;
 					case "QUIT":
 						ClienteChat.println("&gt;&gt; "+resp.params[0]+" se ha desconectado.");
-						ClienteChat.s.close();
-						ClienteChat.quit = true;
+						if(resp.status == 2){
+							// Hemos enviado un quit
+							ClienteChat.finish();
+						}
 						break;
 					case "LIST":
 						String[] aux = separar(resp.params[0]);

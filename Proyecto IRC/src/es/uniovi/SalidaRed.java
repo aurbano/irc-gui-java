@@ -10,6 +10,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class SalidaRed extends Thread{
 	
 	private ArrayBlockingQueue<Comando> outQueue;
+	private boolean running = true;
 	
 	/**
 	 * Constructor de la clase, inicia el buffer de salida y lanza el hilo
@@ -17,6 +18,11 @@ public class SalidaRed extends Thread{
 	public SalidaRed(){
 		outQueue = new ArrayBlockingQueue<Comando>(20);
 		this.start();
+	}
+	
+	public void termina() {
+		running = false;
+		this.interrupt();
 	}
 	
 	/**
@@ -35,13 +41,15 @@ public class SalidaRed extends Thread{
 		Comando c;
 		try{
 			DataOutputStream out = new DataOutputStream(ClienteChat.s.getOutputStream());
-			while(!ClienteChat.quit){
+			while(running){
 				// Espera nuevos comandos
 				c = outQueue.take();
 				// Cuando llega alguno intenta enviarlo
 				out.write(c.get());
 				
 			}
+		}catch(InterruptedException e){
+			return;
 		}catch(Exception e){
 			e.printStackTrace();
 		}

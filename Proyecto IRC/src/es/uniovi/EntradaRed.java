@@ -10,7 +10,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class EntradaRed extends Thread {
 	
 	private ArrayBlockingQueue<Respuesta> inQueue;
-	private boolean running = false;
+	private boolean running = true;
 	
 	/**
 	 * Constructor de la clase, inicializa el buffer y lanza el hilo.
@@ -30,7 +30,7 @@ public class EntradaRed extends Thread {
 		Respuesta res;
 		try{
 			DataInputStream in = new DataInputStream(ClienteChat.s.getInputStream());
-			while(!ClienteChat.quit){
+			while(running){
 				try{
 					// Lee los 2 primeros bytes
 					status = in.readByte();
@@ -65,12 +65,7 @@ public class EntradaRed extends Thread {
 					res = new Respuesta(code,status,params);
 					add(res);
 				}catch(EOFException e){
-					ClienteChat.quit = true;
-					break;
-				}catch(Exception e){
-					e.printStackTrace();
-					ClienteChat.quit = true;
-					break;
+					return;
 				}
 			}
 		}catch(Exception e){

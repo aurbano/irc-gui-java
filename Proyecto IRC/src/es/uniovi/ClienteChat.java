@@ -110,8 +110,8 @@ public class ClienteChat {
 	 */
 	public static void finish(){
 		ClienteChat.quit = true;
-    	//netIn.termina();
-    	//netOut.termina();
+    	netIn.termina();
+    	netOut.termina();
     	ClienteChat.frame.dispose();
     	System.exit(0);
 	}
