@@ -69,6 +69,8 @@ public class HiloSalida extends Thread{
 						break;
 					case "HELLO":
 						ClienteChat.println("&gt;&gt; "+resp.params[0]);
+						// Envia un NICK
+						ClienteChat.netOut.send(new Comando("/NICK "+ClienteChat.nick));
 						break;
 					case "OTROS":
 						error(resp);

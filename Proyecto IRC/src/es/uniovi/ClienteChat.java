@@ -33,8 +33,8 @@ public class ClienteChat {
 	/**
 	 * IP del servidor
 	 */
-	static String host;
-	static int port;
+	static String host = "127.0.0.1";
+	static int port = 69;
 	/**
 	 * Finaliza la sesion
 	 */
@@ -62,14 +62,6 @@ public class ClienteChat {
 	 * @param args Es necesario especificar IP y puerto del servidor.
 	 */
 	public static void main(String[] args){
-		
-		try{
-			host = args[0];
-			port = new Integer(args[1]);
-		}catch(Exception e){
-			System.err.println("Error: Debes especificar IP del servidor y puerto");
-			System.exit(-1);
-		}
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -279,7 +271,6 @@ public class ClienteChat {
 		contentLeft.setLayout(new BorderLayout(0, 0));
 		
 		tabs = new JTabbedPane();
-		tabs.setUI(new TabDesign());
 		contentLeft.add(tabs);
 		tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
