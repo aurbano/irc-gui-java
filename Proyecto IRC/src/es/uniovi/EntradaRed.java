@@ -11,7 +11,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class EntradaRed extends Thread {
 	
 	private ArrayBlockingQueue<Respuesta> inQueue;
-	private boolean running = true;
+	
+	volatile boolean running = true;
+	
+	public void termina() {
+		running = false;
+		this.interrupt();
+	}
 	
 	/**
 	 * Constructor de la clase, inicializa el buffer y lanza el hilo.
@@ -19,11 +25,6 @@ public class EntradaRed extends Thread {
 	public EntradaRed(){
 		inQueue = new ArrayBlockingQueue<Respuesta>(20);
 		this.start();
-	}
-	
-	public void termina() {
-		running = false;
-		this.interrupt();
 	}
 	
 	public void run(){
@@ -66,11 +67,16 @@ public class EntradaRed extends Thread {
 					res = new Respuesta(code,status,params);
 					add(res);
 				}catch(EOFException e){
-					return;
+					System.out.println("EOF");
+					//ClienteChat.finish();
+					//return;
+					break;
 				}
 			}
 		}catch(SocketException e){
-			// El socket se ha cerrado
+			return;
+		}catch(InterruptedException e){
+			return;
 		}catch(Exception e){
 			e.printStackTrace();
 		}

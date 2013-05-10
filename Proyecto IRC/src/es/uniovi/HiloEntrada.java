@@ -1,5 +1,4 @@
 package es.uniovi;
-import java.io.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -30,13 +29,9 @@ public class HiloEntrada extends Thread{
 				cmd = new Comando(line);
 				// Envia el comando
 				ClienteChat.netOut.send(cmd);
-				}
-			}catch(InterruptedException e){
-				e.printStackTrace();
 			}
-		
-	
-		
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}
 	}
-	
 }

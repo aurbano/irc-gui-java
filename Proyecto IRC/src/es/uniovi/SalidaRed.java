@@ -1,6 +1,7 @@
 package es.uniovi;
 
 import java.io.DataOutputStream;
+import java.net.SocketException;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -10,7 +11,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class SalidaRed extends Thread{
 	
 	private ArrayBlockingQueue<Comando> outQueue;
-	private boolean running = true;
+	
+	volatile boolean running = true;
+	
+	public void termina() {
+		running = false;
+		this.interrupt();
+	}
 	
 	/**
 	 * Constructor de la clase, inicia el buffer de salida y lanza el hilo
@@ -18,11 +25,6 @@ public class SalidaRed extends Thread{
 	public SalidaRed(){
 		outQueue = new ArrayBlockingQueue<Comando>(20);
 		this.start();
-	}
-	
-	public void termina() {
-		running = false;
-		this.interrupt();
 	}
 	
 	/**
@@ -42,15 +44,21 @@ public class SalidaRed extends Thread{
 		try{
 			DataOutputStream out = new DataOutputStream(ClienteChat.s.getOutputStream());
 			while(running){
-				// Espera nuevos comandos
-				c = outQueue.take();
-				// Cuando llega alguno intenta enviarlo
-				out.write(c.get());
-				
+				try{
+					// Espera nuevos comandos
+					c = outQueue.take();
+					// Cuando llega alguno intenta enviarlo
+					out.write(c.get());
+				}catch(NullPointerException e){
+					System.out.println("Error: Comando invalido");
+				}
 			}
+		}catch(SocketException e){
+			return;
 		}catch(InterruptedException e){
 			return;
 		}catch(Exception e){
+			ClienteChat.close();
 			e.printStackTrace();
 		}
 	}

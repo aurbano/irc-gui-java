@@ -530,6 +530,22 @@ public class ClienteChat {
 		toolBar.setFloatable(false);
 		toolBar.setBackground(SystemColor.text);
 		
+		// Botones de emoji iconos
+		try{
+			
+			String[] iconos = {"smile","sad","wink","wow","surprise","meh","what","love","hmm"};
+			IconButton[] icons = new IconButton[iconos.length];
+			
+			for(int i=0; i<iconos.length; i++){
+				icons[i] = new IconButton(iconos[i]);
+				toolBar.add(icons[i]);
+			}
+		
+		}catch(Exception e){
+			// Si fallan las imagenes no muestra la barra
+			e.printStackTrace();
+		}
+		
 		JButton smileBtn = new JButton("");
 		smileBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
