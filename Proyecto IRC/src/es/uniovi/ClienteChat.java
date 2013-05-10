@@ -8,7 +8,10 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import es.uniovi.popups.AcercaDe;
 import es.uniovi.popups.CambiarNick;
+import es.uniovi.popups.Comandos;
+import es.uniovi.popups.NuevaSala;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -198,11 +201,11 @@ public class ClienteChat {
 				}else{
 					addSala(name, tabs.getTabCount()-1);
 					// Seleccionamos la ultima
-					tabs.setSelectedIndex(tabs.getTabCount()-1);
+					tabs.setSelectedIndex(tabs.getTabCount()-2);
 					ClienteChat.sala = name;
 					// Si el numero de pestañas es menor que 2, implica que se trata
 					// de la pestaña "Acerca" o de la pestaña vacia que crea nuevas pestañas.
-					if(tabs.getTabCount()>1){
+					if(tabs.getTabCount()>2){
 						addMenuSala(name);
 						try{
 							// Cuando nos conectamos por primera vez, lanzamos un WHO para ver quien esta ya dentro
@@ -417,8 +420,12 @@ public class ClienteChat {
 		tab.setBackground(Color.WHITE);
 		tab.setBorder(null);
 		
+		if(tabs.getTabCount()>0) tabs.remove(tabs.getTabCount()-1);
+		
 		tabs.add(name, tab);
 		tab.setLayout(new BorderLayout(0, 0));
+		
+		tabs.addTab("", null, new JButton("Button"),"Nueva pestaña");
 		
 		ChatArea chat = new ChatArea();
 		//txtpnchevi.setEditable(false);
@@ -639,9 +646,7 @@ public class ClienteChat {
 				return;
 			}
 		});
-		
 		mnNewMenu.add(mntmNewMenuItem_5);
-		
 		mnNewMenu.add(mntmNewMenuItem);
 		
 		JMenu tools = new JMenu("Salas");
@@ -649,6 +654,16 @@ public class ClienteChat {
 		
 		salasMenu = new JMenu("Entrar en");
 		tools.add(salasMenu);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Nueva");
+		mntmNewMenuItem_1.setMnemonic('N');
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// End tab, launch window
+        		new NuevaSala();
+        		return;
+			}
+		});
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Actualizar lista");
 		mntmNewMenuItem_4.setMnemonic('L');
@@ -660,6 +675,7 @@ public class ClienteChat {
 			}
 		});
 		tools.add(mntmNewMenuItem_4);
+		tools.add(mntmNewMenuItem_1);
 		
 		abandonarSala = new JMenuItem("Abandonar sala (W)");
 		abandonarSala.addActionListener(new ActionListener() {
@@ -669,6 +685,27 @@ public class ClienteChat {
 		});
 		abandonarSala.setEnabled(false);
 		tools.add(abandonarSala);
+		
+		JMenu mnNewMenu_2 = new JMenu("Ayuda");
+		menuBar.add(mnNewMenu_2);
+		
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Comandos");
+		mntmNewMenuItem_3.setMnemonic('C');
+		mntmNewMenuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Comandos();
+			}
+		});
+		mnNewMenu_2.add(mntmNewMenuItem_3);
+		
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Acerca de");
+		mntmNewMenuItem_2.setMnemonic('A');
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new AcercaDe();
+			}
+		});
+		mnNewMenu_2.add(mntmNewMenuItem_2);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);
@@ -700,6 +737,12 @@ public class ClienteChat {
 		tabs.addChangeListener(new ChangeListener() {
 	        public void stateChanged(ChangeEvent e) {
 	            if(tabs.getSelectedIndex()>0){
+	            	if(tabs.getSelectedIndex() == tabs.getTabCount()-1){
+	            		// End tab, launch window
+	            		tabs.setSelectedIndex(0);
+	            		new NuevaSala();
+	            		return;
+	            	}
 	            	sala = tabs.getTitleAt(tabs.getSelectedIndex());
 	            	salas.get(sala).displayUsers();
 	            	abandonarSala.setEnabled(true);
