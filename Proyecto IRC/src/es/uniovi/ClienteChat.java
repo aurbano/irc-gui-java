@@ -142,8 +142,8 @@ public class ClienteChat {
 	private ChatArea addTab(String name){
 		JPanel tab = new JPanel();
 		
-				tabs.add(name, tab);
-				tab.setLayout(new BorderLayout(0, 0));
+		tabs.add(name, tab);
+		tab.setLayout(new BorderLayout(0, 0));
 		
 		ChatArea chat = new ChatArea();
 		//txtpnchevi.setEditable(false);
