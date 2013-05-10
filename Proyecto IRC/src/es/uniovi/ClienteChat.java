@@ -8,6 +8,8 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import es.uniovi.popups.CambiarNick;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -628,6 +630,17 @@ public class ClienteChat {
 				ClienteChat.close();
 			}
 		});
+		
+		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Cambiar nick");
+		mntmNewMenuItem_5.setMnemonic('K');
+		mntmNewMenuItem_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new CambiarNick();
+				return;
+			}
+		});
+		
+		mnNewMenu.add(mntmNewMenuItem_5);
 		
 		mnNewMenu.add(mntmNewMenuItem);
 		
