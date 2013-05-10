@@ -1,6 +1,7 @@
 package es.uniovi;
 
 import java.io.*;
+import java.net.SocketException;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -68,6 +69,8 @@ public class EntradaRed extends Thread {
 					return;
 				}
 			}
+		}catch(SocketException e){
+			// El socket se ha cerrado
 		}catch(Exception e){
 			e.printStackTrace();
 		}

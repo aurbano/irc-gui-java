@@ -87,6 +87,14 @@ public class ClienteChat {
 	}
 	
 	/**
+	 * Unirse a una sala
+	 * @param sala
+	 */
+	public static void joinSala(String sala){
+		ClienteChat.sala = sala;
+	}
+	
+	/**
 	 * Finaliza la ejecución
 	 */
 	public static void close(){
