@@ -14,7 +14,7 @@ public class Comando {
 	/**
 	 * Constructor para la clase Comando
 	 * toma el texto introducido por el usuario como parámetro
-	 * @param Comando introducido por el usuario
+	 * @param text Comando introducido por el usuario
 	 */
 	public Comando(String text){
 		// Genera el string de parametros:

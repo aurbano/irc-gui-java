@@ -63,7 +63,7 @@ public class ClienteChat {
 	/**
 	 * Método principal del Cliente, muestra por pantalla algo de información
 	 * y lanza los hilos de entrada por teclado y salida por pantalla.
-	 * @param args Es necesario especificar IP y puerto del servidor.
+	 * @param args Ya no se utilizan los argumentos
 	 */
 	public static void main(String[] args){
 		
@@ -89,7 +89,8 @@ public class ClienteChat {
 	}
 	
 	/**
-	 * Finaliza la ejecución
+	 * Envia un comando /QUIT al servidor. No cierra la aplicacion
+	 * hasta que no llega la respuesta.
 	 */
 	public static void close(){
 		try{
@@ -111,7 +112,7 @@ public class ClienteChat {
 	}
 	
 	/**
-	 * Arranca la interfaz
+	 * Arranca la interfaz gráfica
 	 */
 	public ClienteChat(){
 		initialize();
@@ -157,7 +158,7 @@ public class ClienteChat {
 	
 	/**
 	 * Escribe en todas las salas.
-	 * @param text
+	 * @param text Mensaje a enviar
 	 */
 	public static void println(String text){
 		final String t = text;
@@ -172,7 +173,7 @@ public class ClienteChat {
 	
 	/**
 	 * Envia el /JOIN para unirse a una sala 
-	 * @param name
+	 * @param name Nombre de la sala a la que unirse
 	 */
 	public static void sendJoin(String name){
 		try{
@@ -185,7 +186,7 @@ public class ClienteChat {
 	 * Cambia a la pestaña de la sala seleccionada, si no la hay la crea
 	 * requiere que la sala exista!! Se ejecuta basicamente a la vuelta
 	 * de un JOIN
-	 * @param name Sala a la que cambiar
+	 * @param n Sala a la que cambiar
 	 */
 	public static void joinSala(String n){
 		final String name = n;
@@ -219,7 +220,7 @@ public class ClienteChat {
 	
 	/**
 	 * Envia el /LEAVE para unirse a una sala 
-	 * @param name
+	 * @param name Sala que abandonar
 	 */
 	public static void sendLeave(String name){
 		try{
@@ -233,7 +234,7 @@ public class ClienteChat {
 	 * Despues de eliminar la sala actualiza el numero de pestaña
 	 * de las que estaban por delante, ya que ahora han bajado todas
 	 * 1 posicion.
-	 * @param name
+	 * @param n Nombre de la sala que se abandona
 	 */
 	public static void leaveSala(String n){
 		final String name = n;
@@ -269,7 +270,9 @@ public class ClienteChat {
 	 * que se muestra a la derecha de cada sala.
 	 * La informacion de usuarios activos se almacena en un Arraylist
 	 * de cada Sala.
-	 * @param list
+	 * @param sala Nombre de la sala donde se añaden
+	 * @param list Lista de usuarios
+	 * 
 	 */
 	public static void addUsers(String sala, String[] list){
 		Sala s = salas.get(sala);
@@ -281,8 +284,8 @@ public class ClienteChat {
 	/**
 	 * Añade un usuario a la lista de usuarios online
 	 * de cada sala.
-	 * @param sala
-	 * @param user
+	 * @param sala Sala donde se añade el usuario
+	 * @param user Usuario a añadir
 	 */
 	public static void addUser(String sala, String user){
 		Sala s = salas.get(sala);
@@ -293,8 +296,8 @@ public class ClienteChat {
 	
 	/**
 	 * Elimina un usuario de una sala
-	 * @param sala
-	 * @param user
+	 * @param sala Nombre de la sala
+	 * @param user Nombre del usuario
 	 */
 	public static void removeUser(String sala, String user){
 		Sala s = salas.get(sala);
@@ -306,7 +309,7 @@ public class ClienteChat {
 	/**
 	 * Elimina un usuario de todas las salas
 	 * (Tras un /QUIT)
-	 * @param user
+	 * @param user Nombre del usuario
 	 */
 	public static void removeUserAll(String user){
 		for (Map.Entry<String, Sala> entry : salas.entrySet()) {
@@ -318,8 +321,8 @@ public class ClienteChat {
 	 * Reemplaza un usuario en todas las salas
 	 * se deberia utilizar despues de que un usuario
 	 * cambie su NICK
-	 * @param old
-	 * @param user
+	 * @param old Antiguo nombre de usuario
+	 * @param user Nuevo nombre
 	 */
 	public static void replaceUser(String old, String user){
 		for (Map.Entry<String, Sala> entry : salas.entrySet()) {
@@ -330,7 +333,8 @@ public class ClienteChat {
 	/**
 	 * Añade una sala al array de salas, sin crear la pestaña
 	 * @see joinSala
-	 * @param name
+	 * @param name Nombre de la sala
+	 * @param num Numero de su pestaña
 	 */
 	private static void addSala(String name, int num){
 		salas.put(name, new Sala(name, num));
@@ -339,7 +343,7 @@ public class ClienteChat {
 	
 	/**
 	 * Añade una lista de salas al menu
-	 * @param list
+	 * @param list Lista de salas (Recogida por /LIST)
 	 */
 	public static void listSalas(String[] list){
 		for(String each : list){
@@ -350,8 +354,8 @@ public class ClienteChat {
 	}
 	
 	/**
-	 * Añade una sala al menu
-	 * @param sala
+	 * Añade una sala al menu desplegable
+	 * @param sala Nombre de la sala
 	 */
 	public static void addMenuSala(String sala){
 		if(sala.trim().length() > 0 && !salasList.contains(sala)){
@@ -362,8 +366,8 @@ public class ClienteChat {
 	}
 	
 	/**
-	 * Elimina una sala del menu
-	 * @param sala
+	 * Elimina una sala del menu desplegable
+	 * @param sala Nombre de la sala
 	 */
 	public static void removeMenuSala(String sala){
 		if(salasList.remove(sala)){
@@ -401,7 +405,7 @@ public class ClienteChat {
 	/**
 	 * Envia una peticion de /NICK, el nick se cambia
 	 * cuando el servidor lo confirme
-	 * @param nick
+	 * @param nick Nuevo nombre
 	 */
 	public static void newNick(String nick){
 		try{
@@ -411,9 +415,9 @@ public class ClienteChat {
 	
 	/**
 	 * Añade una pestaña, solo se llama desde joinSala, que ya esta en un invokeLater
-	 * @see joinSala
-	 * @param name
-	 * @return
+	 * @see #joinSala(String)
+	 * @param name Nombre de la sala
+	 * @return ChatArea de la pestaña creada
 	 */
 	public static ChatArea addTab(String name){
 		JPanel tab = new JPanel();
@@ -443,7 +447,7 @@ public class ClienteChat {
 	}
 	
 	/**
-	 * Inicia la conexion al servidor.
+	 * Inicia la conexion al servidor, añade la sala inicial y muestra el mensaje de bienvenida
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
@@ -478,6 +482,7 @@ public class ClienteChat {
 	
 	/**
 	 * Lanza la ventana de configuracion
+	 * (Host, puerto, nick)
 	 */
 	private static void config(){
 		new Config();

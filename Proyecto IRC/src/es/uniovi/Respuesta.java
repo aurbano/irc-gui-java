@@ -12,7 +12,9 @@ public class Respuesta {
 	
 	/**
 	 * Separa el texto recibido, diferenciando entre el tipo, estado y los parámetros.
-	 * @param Mensaje recibido
+	 * @param code
+	 * @param status
+	 * @param message
 	 */
 	public Respuesta(int code, int status, String[] message){
 		HashMap<Integer,String> tabla = new HashMap<Integer,String>();

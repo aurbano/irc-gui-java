@@ -136,7 +136,7 @@ public class HiloSalida extends Thread{
 	/**
 	 * Separa los parametros de entrada por ;
 	 * @param parametros
-	 * @return
+	 * @return Lista de parametros separados
 	 */
 	private String[] separar(String parametros){
 		String[] ret = parametros.split(";");

@@ -17,7 +17,7 @@ public class Sala {
 	
 	/**
 	 * Crea una nueva sala, siempre es llamado desde un invokeLater
-	 * @see joinSala
+	 * @see ClienteChat.#joinSala(String)
 	 * @param name
 	 * @param num
 	 */
