@@ -4,7 +4,11 @@ Java chat almost IRC compliant with graphical interface. The GUI was written usi
 
 
 ## Running
-First launch the server: ChatServer.jar
+First launch the server: ChatServer.jar:
+
+```java
+java -jar ChatServer.jar [port]
+```
 
 Once it's running execute the client (ClienteChat), you will have to build it first. Write the server IP and port where the server is running, and that should be it.
 
