@@ -10,8 +10,8 @@ Once it's running execute the client (ClienteChat), you will have to build it fi
 
 ## Contributors
 
-* Alejandro U. Álvarez
-* Irene Martínez de Soto
+* [Alejandro U. Álvarez](http://urbanoalvarez.es)
+* [Irene Martínez de Soto](https://github.com/irenemds)
 
 ## License
 Licensed under the GPL license
