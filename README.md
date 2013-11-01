@@ -1,6 +1,6 @@
 # Chat-IRC
 
-Java chat almost IRC compliant with graphical interface
+Java chat almost IRC compliant with graphical interface. The GUI was written using Java Swing mainly, although the main chat area was styled using HTML+CSS for extra control.
 
 
 ## Running
