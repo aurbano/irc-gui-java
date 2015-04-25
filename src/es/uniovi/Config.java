@@ -20,10 +20,10 @@ import java.net.UnknownHostException;
 public class Config {
 
 	/**
-	 * Create the dialog.
+	 * Configuration dialog box
 	 */
 	public Config(){
-		final JDialog conf = new JDialog(ClienteChat.frame, "Bienvenido!", Dialog.ModalityType.APPLICATION_MODAL);
+		final JDialog conf = new JDialog(ChatClient.frame, "Welcome!", Dialog.ModalityType.APPLICATION_MODAL);
 		
 		JPanel contentPanel = new JPanel();
 		final JTextField host;
@@ -33,7 +33,7 @@ public class Config {
 		
 		conf.getContentPane().setBackground(Color.WHITE);
 		
-		conf.setTitle("Bienvenido - ClienteChat v3");
+		conf.setTitle("Welcome - IRC - ChatClient v3");
 		conf.setBounds(100, 100, 450, 182);
 		conf.getContentPane().setLayout(null);
 		contentPanel.setBounds(0, 0, 434, 147);
@@ -46,9 +46,9 @@ public class Config {
 		lblHost.setBounds(36, 26, 68, 14);
 		contentPanel.add(lblHost);
 		
-		JLabel lblPuerto = new JLabel("Puerto");
-		lblPuerto.setBounds(226, 26, 59, 14);
-		contentPanel.add(lblPuerto);
+		JLabel lblPort = new JLabel("Port");
+		lblPort.setBounds(226, 26, 59, 14);
+		contentPanel.add(lblPort);
 		
 		JLabel lblNick = new JLabel("Nick");
 		lblNick.setBounds(284, 26, 69, 14);
@@ -63,52 +63,52 @@ public class Config {
 		host.setBounds(36, 43, 180, 20);
 		contentPanel.add(host);
 		host.setColumns(20);
-		host.setText(ClienteChat.host);
+		host.setText(ChatClient.host);
 		
 		port = new JSpinner();
 		port.setBounds(226, 43, 48, 20);
 		contentPanel.add(port);
-		port.setValue(ClienteChat.port);
+		port.setValue(ChatClient.port);
 		
 		nick = new JTextField();
 		nick.setBounds(284, 43, 114, 20);
 		nick.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(host.getText().length() < 1){
-					error.setText("Introduce un host por favor");
+					error.setText("Specify a host please");
 					return;
 				}
 				if((Integer)port.getValue() < 1){
-					error.setText("Introduce un puerto válido por favor");
+					error.setText("Specify a valid port please");
 					return;
 				}
 				if(nick.getText().length() < 1){
-					error.setText("Introduce un nick por favor");
+					error.setText("Specify a nick please");
 					return;
 				}
 				error.setText("");
 				
-				ClienteChat.host = host.getText();
-				ClienteChat.port = (Integer)port.getValue();
-				ClienteChat.nick = nick.getText();
+				ChatClient.host = host.getText();
+				ChatClient.port = (Integer)port.getValue();
+				ChatClient.nick = nick.getText();
 				
-				// Conecta
+				// Connect
 				try{
-					ClienteChat.connect();
+					ChatClient.connect();
 					conf.dispose();
 				}catch(UnknownHostException e){
-					error.setText("Host invalido");
+					error.setText("Invalid host");
 				}catch(IOException e){
-					error.setText("No se pudo establecer la conexion");
+					error.setText("Could not establish a connection with the host");
 				}
 				return;
 			}
 		});
 		contentPanel.add(nick);
 		nick.setColumns(10);
-		nick.setText(ClienteChat.nick);
+		nick.setText(ChatClient.nick);
 		{
-			JButton okButton = new JButton("Conectar");
+			JButton okButton = new JButton("Connect");
 			okButton.setForeground(SystemColor.textHighlight);
 			okButton.setBackground(SystemColor.text);
 			okButton.setBounds(161, 100, 124, 23);
@@ -116,38 +116,38 @@ public class Config {
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if(host.getText().length() < 1){
-						error.setText("Introduce un host por favor");
+						error.setText("Specify a host please");
 						return;
 					}
 					if((Integer)port.getValue() < 1){
-						error.setText("Introduce un puerto válido por favor");
+						error.setText("Specify a port please");
 						return;
 					}
 					if(nick.getText().length() < 1){
-						error.setText("Introduce un nick por favor");
+						error.setText("Specify a nick please");
 						return;
 					}
 					error.setText("");
 					
-					ClienteChat.host = host.getText();
-					ClienteChat.port = (Integer)port.getValue();
-					ClienteChat.nick = nick.getText();
+					ChatClient.host = host.getText();
+					ChatClient.port = (Integer)port.getValue();
+					ChatClient.nick = nick.getText();
 					
-					// Conecta
+					// Connect
 					try{
-						ClienteChat.connect();
+						ChatClient.connect();
 						conf.dispose();
 					}catch(UnknownHostException e){
-						error.setText("Host invalido");
+						error.setText("Invalid host");
 					}catch(IOException e){
-						error.setText("No se pudo establecer la conexion");
+						error.setText("Could not establish a connection");
 					}
 					return;
 				}
 			});
 		}
 		
-		// Cambiamos el evento de cierre
+		// Override the window closing event to finish the program
 		conf.addWindowListener(new WindowAdapter() {
 		    @Override
 		    public void windowClosing(WindowEvent e){

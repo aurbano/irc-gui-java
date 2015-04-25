@@ -6,8 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Permite insertar varios botones con iconos
- * de manera dinamica en la interfaz.
+ * Generate buttons with icons in them easily
  *
  */
 public class IconButton extends JButton{
@@ -19,7 +18,7 @@ public class IconButton extends JButton{
 		setToolTipText(name);
 		addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ClienteChat.msg.setText(ClienteChat.msg.getText()+":"+name+":");
+				ChatClient.msg.setText(ChatClient.msg.getText()+":"+name+":");
 			}
 		});
 		setBackground(SystemColor.text);
