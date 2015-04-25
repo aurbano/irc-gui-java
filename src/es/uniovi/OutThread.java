@@ -5,7 +5,7 @@ import es.uniovi.popups.ChangeNick;
 /**
  * Outgoing thread
  */
-public class OutThread extends Thread{
+class OutThread extends Thread{
 	public OutThread(){
 		this.start();
 	}
@@ -75,7 +75,7 @@ public class OutThread extends Thread{
 								print += aux[i];
 								if(i<aux.length - 1) print += ", ";
 							}
-							ChatClient.listSalas(aux);
+							ChatClient.listRooms(aux);
 						}else{
 							print += "There are no rooms";
 						}
@@ -98,8 +98,8 @@ public class OutThread extends Thread{
 					case "HELLO":
 						ChatClient.println("&raquo; " + resp.params[0]);
 						// Send a NICK
-						ChatClient.netOut.send(new Comand("/NICK "+ ChatClient.nick));
-						ChatClient.netOut.send(new Comand("/LIST"));
+						ChatClient.netOut.send(new Command("/NICK "+ ChatClient.nick));
+						ChatClient.netOut.send(new Command("/LIST"));
 						break;
 					case "OTHERS":
 						error(resp);

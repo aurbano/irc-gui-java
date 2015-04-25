@@ -8,14 +8,14 @@ import java.util.HashMap;
  * Maps text identified commands to their binary representation
  */
 
-public class Comand {
-	String[] params;
+class Command {
+	private final String[] params;
 	
 	/**
 	 * Generate a new command
 	 * @param text Command string
 	 */
-	public Comand(String text){
+	public Command(String text){
 		if (text.startsWith("/")){
 			this.params = text.split(" ");
 		}else{

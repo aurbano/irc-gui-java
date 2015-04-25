@@ -7,10 +7,8 @@ import javax.swing.text.DefaultCaret;
  * Custom JTextPane with support for the append function
  */
 public class ChatArea extends JTextPane {
-	
-	private static final long serialVersionUID = 1L;
-	
-	String content="";
+
+	private String content="";
 	
 	public ChatArea(){
 		super();
@@ -24,7 +22,7 @@ public class ChatArea extends JTextPane {
 	public void append(String text) {
 		content += text+"<br />";
 		super.setText("<html><head></head><body>"+content+"</body></html>");
-		// Keep the box scrolled to the bttom
+		// Keep the box scrolled to the bottom
 		DefaultCaret caret = (DefaultCaret) getCaret();
         caret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);
 	}

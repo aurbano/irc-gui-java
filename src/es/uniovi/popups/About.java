@@ -13,47 +13,45 @@ import es.uniovi.ChatClient;
 
 public class About extends JDialog {
 
-	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
-
 	/**
 	 * Create the dialog.
 	 */
 	public About() {
-		final JDialog ventana = new JDialog(ChatClient.frame, "About ChatClient v3", Dialog.ModalityType.APPLICATION_MODAL);
+		final JDialog window = new JDialog(ChatClient.frame, "About ChatClient v3", Dialog.ModalityType.APPLICATION_MODAL);
 		
-		ventana.setBounds(100, 100, 512, 274);
-		ventana.getContentPane().setLayout(null);
+		window.setBounds(100, 100, 512, 274);
+		window.getContentPane().setLayout(null);
+		JPanel contentPanel = new JPanel();
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBounds(0, 0, 496, 243);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		ventana.getContentPane().add(contentPanel);
+		window.getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
 		
-		JLabel lblClientechatV = new JLabel("ChatClient v3");
-		lblClientechatV.setBounds(5, 5, 481, 52);
-		lblClientechatV.setFont(new Font("Georgia", Font.PLAIN, 20));
-		lblClientechatV.setHorizontalAlignment(SwingConstants.CENTER);
-		contentPanel.add(lblClientechatV);
+		JLabel lblChatClient = new JLabel("ChatClient v3");
+		lblChatClient.setBounds(5, 5, 481, 52);
+		lblChatClient.setFont(new Font("Georgia", Font.PLAIN, 20));
+		lblChatClient.setHorizontalAlignment(SwingConstants.CENTER);
+		contentPanel.add(lblChatClient);
 		
-		JLabel lblIreneMartnezDe = new JLabel("Irene Mart\u00EDnez de Soto (UO217249)");
-		lblIreneMartnezDe.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIreneMartnezDe.setBounds(5, 114, 481, 52);
-		contentPanel.add(lblIreneMartnezDe);
+		JLabel lblAuthor2 = new JLabel("Irene Mart\u00EDnez de Soto (UO217249)");
+		lblAuthor2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAuthor2.setBounds(5, 114, 481, 52);
+		contentPanel.add(lblAuthor2);
 		
-		JLabel lblAlejandroUrbanolvarez = new JLabel("Alejandro Urbano \u00C1lvarez (UO212087)");
-		lblAlejandroUrbanolvarez.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAlejandroUrbanolvarez.setBounds(5, 57, 481, 52);
-		contentPanel.add(lblAlejandroUrbanolvarez);
+		JLabel lblAuthor1 = new JLabel("Alejandro Urbano \u00C1lvarez (UO212087)");
+		lblAuthor1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAuthor1.setBounds(5, 57, 481, 52);
+		contentPanel.add(lblAuthor1);
 		
-		JLabel lblEpiGijn = new JLabel("EPI Gij\u00F3n - 2013");
-		lblEpiGijn.setForeground(Color.GRAY);
-		lblEpiGijn.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEpiGijn.setBounds(5, 177, 481, 52);
-		contentPanel.add(lblEpiGijn);
+		JLabel lblUniversity = new JLabel("EPI Gij\u00F3n - 2013");
+		lblUniversity.setForeground(Color.GRAY);
+		lblUniversity.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUniversity.setBounds(5, 177, 481, 52);
+		contentPanel.add(lblUniversity);
 		
 		
-		ventana.setVisible(true);
-		ventana.setAlwaysOnTop(true);
+		window.setVisible(true);
+		window.setAlwaysOnTop(true);
 	}
 }

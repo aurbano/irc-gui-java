@@ -7,11 +7,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 /**
  * Receives messages and adds them to an input queue
  */
-public class NetworkIn extends Thread {
+class NetworkIn extends Thread {
 	
-	private ArrayBlockingQueue<Response> inQueue;
+	private final ArrayBlockingQueue<Response> inQueue;
 	
-	volatile boolean running = true;
+	private volatile boolean running = true;
 	
 	public void finish() {
 		running = false;
@@ -66,7 +66,7 @@ public class NetworkIn extends Thread {
 	 * @param ans Received response
 	 * @throws InterruptedException if the thread is locked while waiting
 	 */
-	public void add(Response ans) throws InterruptedException{
+	private void add(Response ans) throws InterruptedException{
 		inQueue.put(ans);
 	}
 	

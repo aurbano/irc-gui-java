@@ -8,11 +8,11 @@ import java.util.concurrent.ArrayBlockingQueue;
  * Network Out helper class, it implements a command buffer
  * using an Array Blocking Queue for multi threading support.
  */
-public class NetworkOut extends Thread{
+class NetworkOut extends Thread{
 	
-	private ArrayBlockingQueue<Comand> outQueue;
+	private final ArrayBlockingQueue<Command> outQueue;
 	
-	volatile boolean running = true;
+	private volatile boolean running = true;
 	
 	public void finish() {
 		running = false;
@@ -23,7 +23,7 @@ public class NetworkOut extends Thread{
 	 * Initialize buffer and run the thread
 	 */
 	public NetworkOut(){
-		outQueue = new ArrayBlockingQueue<Comand>(20);
+		outQueue = new ArrayBlockingQueue<>(20);
 		this.start();
 	}
 	
@@ -31,7 +31,7 @@ public class NetworkOut extends Thread{
 	 * Adds commands to the output queue
 	 * @param cmd Command
 	 */
-	public void send(Comand cmd) throws InterruptedException{
+	public void send(Command cmd) throws InterruptedException{
 		outQueue.put(cmd);
 	}
 	
@@ -40,7 +40,7 @@ public class NetworkOut extends Thread{
 	 * sending them when available.
 	 */
 	public void run(){
-		Comand c;
+		Command c;
 		try{
 			DataOutputStream out = new DataOutputStream(ChatClient.s.getOutputStream());
 			while(running){

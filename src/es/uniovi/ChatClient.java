@@ -6,7 +6,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
 import es.uniovi.popups.About;
 import es.uniovi.popups.ChangeNick;
@@ -42,8 +41,7 @@ public class ChatClient {
 	
 	static Socket s;
 
-	static OutThread out;
-	static InThread in;
+	private static InThread in;
 	
 	/**
 	 * Main class for the client, it launches the UI and starts the network threads.
@@ -51,25 +49,23 @@ public class ChatClient {
 	 */
 	public static void main(String[] args){
 		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new ChatClient();
-					ChatClient.frame.setVisible(true);
-					ChatClient.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-					
-					// Start the rooms
-					rooms = new HashMap<>();
-					roomList = new ArrayList<>();
-					
-					// Wait for server configuration
-					config();
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            try {
+                new ChatClient();
+                ChatClient.frame.setVisible(true);
+                ChatClient.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+                // Start the rooms
+                rooms = new HashMap<>();
+                roomList = new ArrayList<>();
+
+                // Wait for server configuration
+                config();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 	}
 	
 	/**
@@ -78,7 +74,7 @@ public class ChatClient {
 	 */
 	public static void close(){
 		try{
-    		ChatClient.netOut.send(new Comand("/QUIT"));
+    		ChatClient.netOut.send(new Command("/QUIT"));
     	}catch(Exception ex){
     		System.out.println("Unable to send /QUIT");
     	}
@@ -98,7 +94,7 @@ public class ChatClient {
 	/**
 	 * Initialize the GUI
 	 */
-	public ChatClient(){
+	private ChatClient(){
 		initialize();
 	}
 	
@@ -108,14 +104,12 @@ public class ChatClient {
 	 */
 	public static void println(String room, String text){
 		final String s = room, t = text;
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				Room currentRoom = rooms.get(s);
-				if(currentRoom != null){
-					rooms.get(s).append(t);
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            Room currentRoom = rooms.get(s);
+            if(currentRoom != null){
+                rooms.get(s).append(t);
+            }
+        });
 	}
 	
 	/**
@@ -125,18 +119,16 @@ public class ChatClient {
 	 */
 	public static void printMsg(String room, String text){
 		final String s = room, t = text;
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				Room room = rooms.get(s);
-				if(room != null){
-					rooms.get(s).append(t);
-					// Change the room color
-					if(!s.equals(ChatClient.room)){
-						tabs.setBackgroundAt(room.num, Color.ORANGE);
-					}
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            Room room1 = rooms.get(s);
+            if(room1 != null){
+                rooms.get(s).append(t);
+                // Change the room color
+                if(!s.equals(ChatClient.room)){
+                    tabs.setBackgroundAt(room1.num, Color.ORANGE);
+                }
+            }
+        });
 	}
 	
 	/**
@@ -145,13 +137,11 @@ public class ChatClient {
 	 */
 	public static void println(String text){
 		final String t = text;
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				for (Map.Entry<String, Room> entry : rooms.entrySet()) {
-					entry.getValue().append(t);
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            for (Map.Entry<String, Room> entry : rooms.entrySet()) {
+                entry.getValue().append(t);
+            }
+        });
 	}
 	
 	/**
@@ -160,8 +150,8 @@ public class ChatClient {
 	 */
 	public static void sendJoin(String name){
 		try{
-			ChatClient.netOut.send(new Comand("/JOIN "+name));
-		}catch(Exception e){}
+			ChatClient.netOut.send(new Command("/JOIN "+name));
+		}catch(Exception ignored){}
 	}
 	
 	/**
@@ -170,41 +160,39 @@ public class ChatClient {
 	 */
 	public static void joinRoom(String n){
 		final String name = n;
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				Room room = rooms.get(name);
-				if(room != null){
-				    // Select the new room
-					ChatClient.room = name;
-					tabs.setSelectedIndex(room.num);
-					room.displayUsers();
-				}else{
-					addSala(name, tabs.getTabCount()-1);
-					// Select the last room
-					tabs.setSelectedIndex(tabs.getTabCount()-2);
-					ChatClient.room = name;
-					// If the number of tabs is less than 2 it means its either the about tab
-					// or something weird..
-					if(tabs.getTabCount()>2){
-						addRoom(name);
-						try{
-							// Get a list of users in the room to populate the right panel
-							ChatClient.netOut.send(new Comand("/WHO "+name));
-						}catch(Exception e){ }	
-					}
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            Room room1 = rooms.get(name);
+            if(room1 != null){
+                // Select the new room
+                room = name;
+                tabs.setSelectedIndex(room1.num);
+                room1.displayUsers();
+            }else{
+                addRoom(name, tabs.getTabCount() - 1);
+                // Select the last room
+                tabs.setSelectedIndex(tabs.getTabCount()-2);
+                room = name;
+                // If the number of tabs is less than 2 it means its either the about tab
+                // or something weird..
+                if(tabs.getTabCount()>2){
+                    addRoom(name);
+                    try{
+                        // Get a list of users in the room to populate the right panel
+                        ChatClient.netOut.send(new Command("/WHO "+name));
+                    }catch(Exception ignored){ }
+                }
+            }
+        });
 	}
 	
 	/**
 	 * Send a /LEAVE command
 	 * @param name Room name
 	 */
-	public static void sendLeave(String name){
+	private static void sendLeave(String name){
 		try{
-			ChatClient.netOut.send(new Comand("/LEAVE "+name));
-		}catch(Exception e){}
+			ChatClient.netOut.send(new Command("/LEAVE "+name));
+		}catch(Exception ignored){}
 	}
 	
 	/**
@@ -213,30 +201,28 @@ public class ChatClient {
 	 */
 	public static void leaveRoom(String n){
 		final String name = n;
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				Room room = rooms.get(name);
-				if(room != null){
-					tabs.setSelectedIndex(0);
-					tabs.remove(room.num);
-					ChatClient.room = "About";
-					rooms.remove(name);
-					
-					int index = room.num;
-					HashMap<String, Room> aux = new HashMap<>();
-					Room s;
-					// Reduce the tab index of all tabs after the removed one
-					for (Map.Entry<String, Room> entry : rooms.entrySet()) {
-						s = entry.getValue();
-						if(s.num > index){
-							s.num--;
-							aux.put(entry.getKey(), s);
-						}
-					}
-					rooms = aux;
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            Room room1 = rooms.get(name);
+            if(room1 != null){
+                tabs.setSelectedIndex(0);
+                tabs.remove(room1.num);
+                room = "About";
+                rooms.remove(name);
+
+                int index = room1.num;
+                HashMap<String, Room> aux = new HashMap<>();
+                Room s1;
+                // Reduce the tab index of all tabs after the removed one
+                for (Map.Entry<String, Room> entry : rooms.entrySet()) {
+                    s1 = entry.getValue();
+                    if(s1.num > index){
+                        s1.num--;
+                        aux.put(entry.getKey(), s1);
+                    }
+                }
+                rooms = aux;
+            }
+        });
 	}
 	
 	/**
@@ -303,7 +289,7 @@ public class ChatClient {
 	 * @param name Room name
 	 * @param num Tab index
 	 */
-	private static void addSala(String name, int num){
+	private static void addRoom(String name, int num){
 		rooms.put(name, new Room(name, num));
 		room = name;
 	}
@@ -312,59 +298,56 @@ public class ChatClient {
 	 * Add all the rooms to the panel
 	 * @param list Room list
 	 */
-	public static void listSalas(String[] list){
+	public static void listRooms(String[] list){
 		for(String each : list){
 			if(!roomList.contains(each)) roomList.add(each);
 		}
 		Collections.sort(roomList);
-		menuSalas();
+		roomMenu();
 	}
 	
 	/**
 	 * Add a room to the right panel
 	 * @param room Room name
 	 */
-	public static void addRoom(String room){
+	private static void addRoom(String room){
 		if(room.trim().length() > 0 && !roomList.contains(room)){
 			roomList.add(room);
 			Collections.sort(roomList);
-			menuSalas();
+			roomMenu();
 		}
 	}
 	
 	/**
 	 * Remove a room from the right panel
 	 */
-	public static void removeRoom(String sala){
-		if(roomList.remove(sala)){
-			menuSalas();
+	@SuppressWarnings("unused")
+	private static void removeRoom(String room){
+		if(roomList.remove(room)){
+			roomMenu();
 		}
 	}
 	
 	/**
 	 * Display the room list on the right panel
 	 */
-	private static void menuSalas(){
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				roomMenu.removeAll();
-				for(final String each : roomList){
-					JMenuItem room = new JMenuItem(each);
-					// Click action
-					room.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							Room s = rooms.get(each);
-							if (s != null) {
-								joinRoom(each);
-							} else {
-								sendJoin(each);
-							}
-						}
-					});
-					roomMenu.add(room);
-				}
-			}
-		});
+	private static void roomMenu(){
+		EventQueue.invokeLater(() -> {
+            roomMenu.removeAll();
+            for(final String each : roomList){
+                JMenuItem room1 = new JMenuItem(each);
+                // Click action
+                room1.addActionListener(arg0 -> {
+                    Room s1 = rooms.get(each);
+                    if (s1 != null) {
+                        joinRoom(each);
+                    } else {
+                        sendJoin(each);
+                    }
+                });
+                roomMenu.add(room1);
+            }
+        });
 	}
 	
 	/**
@@ -373,8 +356,8 @@ public class ChatClient {
 	 */
 	public static void newNick(String nick){
 		try{
-			ChatClient.netOut.send(new Comand("/NICK "+nick));
-		}catch(Exception ex){}
+			ChatClient.netOut.send(new Command("/NICK "+nick));
+		}catch(Exception ignored){}
 	}
 	
 	/**
@@ -396,7 +379,6 @@ public class ChatClient {
 		tabs.addTab("", null, new JButton("Button"),"New tab");
 		
 		ChatArea chat = new ChatArea();
-		//txtpnchevi.setEditable(false);
 		chat.setContentType("text/html");
 		chat.setBackground(Color.WHITE);
 		tab.add(chat, BorderLayout.CENTER);
@@ -415,7 +397,7 @@ public class ChatClient {
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
-	static void connect() throws UnknownHostException, IOException{
+	static void connect() throws IOException{
 		// Try connecting
 		s = new Socket(host, port);
 		
@@ -443,7 +425,6 @@ public class ChatClient {
 		netIn = new NetworkIn();
 
 		in = new InThread();
-		out = new OutThread();
 	}
 	
 	/**
@@ -463,10 +444,10 @@ public class ChatClient {
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.getContentPane().setFont(new Font("Georgia", Font.PLAIN, 25));
 		frame.setBounds(100, 100, 720, 574);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		frame.setMinimumSize(new Dimension(400, 300));
-		// Intenta poner un icono a la app
+		// Try to assign an icon to the app
 		try{
 			URL url = new URL("file:img/icons/icon16.png");
 			Toolkit kit = Toolkit.getDefaultToolkit();
@@ -504,11 +485,11 @@ public class ChatClient {
 		// Emoji icons
 		try{
 			
-			String[] iconos = {"smile","sad","wink","wow","surprise","meh","what","love","hmm"};
-			IconButton[] icons = new IconButton[iconos.length];
+			String[] iconNames = {"smile","sad","wink","wow","surprise","meh","what","love","hmm"};
+			IconButton[] icons = new IconButton[iconNames.length];
 			
-			for(int i=0; i<iconos.length; i++){
-				icons[i] = new IconButton(iconos[i]);
+			for(int i=0; i<icons.length; i++){
+				icons[i] = new IconButton(iconNames[i]);
 				toolBar.add(icons[i]);
 			}
 		
@@ -519,11 +500,7 @@ public class ChatClient {
 		}
 		
 		JButton smileBtn = new JButton("");
-		smileBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				msg.setText(msg.getText()+":smile:");
-			}
-		});
+		smileBtn.addActionListener(e -> msg.setText(msg.getText()+":smile:"));
 		smileBtn.setBackground(SystemColor.text);
 		smileBtn.setIcon(new ImageIcon("img/icons/smile.png"));
 		toolBar.add(smileBtn);
@@ -540,17 +517,15 @@ public class ChatClient {
 		
 		msg = new JTextField();
 		msgBox.add(msg);
-		msg.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				// Enter key
-				try{
-					in.messageQueue.put(msg.getText());
-					msg.setText("");
-				}catch(Exception e){
-					System.out.println("The outbound queue is full!");
-				}
-			}
-		});
+		msg.addActionListener(arg0 -> {
+            // Enter key
+            try{
+                in.messageQueue.put(msg.getText());
+                msg.setText("");
+            }catch(Exception e){
+                System.out.println("The outbound queue is full!");
+            }
+        });
 		msg.setBackground(SystemColor.window);
 		msg.setColumns(30);
 		
@@ -576,16 +551,14 @@ public class ChatClient {
 		
 		JButton send = new JButton("Send");
 		btnBottom.add(send);
-		send.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try{
-					in.messageQueue.put(msg.getText());
-					msg.setText("");
-				}catch(Exception e){
-					System.out.println("Inbound queue full!");
-				}
-			}
-		});
+		send.addActionListener(arg0 -> {
+            try{
+                in.messageQueue.put(msg.getText());
+                msg.setText("");
+            }catch(Exception e){
+                System.out.println("Inbound queue full!");
+            }
+        });
 		send.setForeground(SystemColor.textHighlight);
 		send.setFont(new Font("Georgia", Font.PLAIN, 18));
 		send.setBackground(SystemColor.text);
@@ -618,20 +591,11 @@ public class ChatClient {
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Close");
-		mntmNewMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ChatClient.close();
-			}
-		});
+		mntmNewMenuItem.addActionListener(arg0 -> ChatClient.close());
 		
 		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Change nick");
 		mntmNewMenuItem_5.setMnemonic('K');
-		mntmNewMenuItem_5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new ChangeNick();
-				return;
-			}
-		});
+		mntmNewMenuItem_5.addActionListener(e -> new ChangeNick());
 		mnNewMenu.add(mntmNewMenuItem_5);
 		mnNewMenu.add(mntmNewMenuItem);
 		
@@ -643,32 +607,23 @@ public class ChatClient {
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("New");
 		mntmNewMenuItem_1.setMnemonic('N');
-		mntmNewMenuItem_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// End tab, launch window
-        		new NewRoom();
-        		return;
-			}
-		});
+		mntmNewMenuItem_1.addActionListener(e -> {
+            // End tab, launch window
+            new NewRoom();
+        });
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Refresh list");
 		mntmNewMenuItem_4.setMnemonic('L');
-		mntmNewMenuItem_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try{
-					ChatClient.netOut.send(new Comand("/LIST"));
-				}catch(Exception ex){}
-			}
-		});
+		mntmNewMenuItem_4.addActionListener(e -> {
+            try{
+                ChatClient.netOut.send(new Command("/LIST"));
+            }catch(Exception ignored){}
+        });
 		tools.add(mntmNewMenuItem_4);
 		tools.add(mntmNewMenuItem_1);
 		
 		leaveRoom = new JMenuItem("Leave room (W)");
-		leaveRoom.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ChatClient.sendLeave(ChatClient.room);
-			}
-		});
+		leaveRoom.addActionListener(e -> ChatClient.sendLeave(ChatClient.room));
 		leaveRoom.setEnabled(false);
 		tools.add(leaveRoom);
 		
@@ -677,20 +632,12 @@ public class ChatClient {
 		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Commands");
 		mntmNewMenuItem_3.setMnemonic('C');
-		mntmNewMenuItem_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new Commands();
-			}
-		});
+		mntmNewMenuItem_3.addActionListener(e -> new Commands());
 		mnNewMenu_2.add(mntmNewMenuItem_3);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("About...");
 		mntmNewMenuItem_2.setMnemonic('A');
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new About();
-			}
-		});
+		mntmNewMenuItem_2.addActionListener(e -> new About());
 		mnNewMenu_2.add(mntmNewMenuItem_2);
 		
 		JPanel panel_2 = new JPanel();
@@ -721,29 +668,26 @@ public class ChatClient {
 		tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		// Tab changing
-		tabs.addChangeListener(new ChangeListener() {
-	        public void stateChanged(ChangeEvent e) {
-	            if(tabs.getSelectedIndex()>0){
-	            	if(tabs.getSelectedIndex() == tabs.getTabCount()-1){
-	            		// End tab, launch window
-	            		tabs.setSelectedIndex(0);
-	            		new NewRoom();
-	            		return;
-	            	}
-	            	room = tabs.getTitleAt(tabs.getSelectedIndex());
-	            	rooms.get(room).displayUsers();
-	            	leaveRoom.setEnabled(true);
-	            	tabs.setBackgroundAt(tabs.getSelectedIndex(), Color.WHITE);
-	            }else{
-	            	users.setText("-Enter a room-");
-	            	leaveRoom.setEnabled(false);
-	            }
-	        }
-	    });
+		tabs.addChangeListener(e -> {
+            if(tabs.getSelectedIndex()>0){
+                if(tabs.getSelectedIndex() == tabs.getTabCount()-1){
+                    // End tab, launch window
+                    tabs.setSelectedIndex(0);
+                    new NewRoom();
+                    return;
+                }
+                room = tabs.getTitleAt(tabs.getSelectedIndex());
+                rooms.get(room).displayUsers();
+                leaveRoom.setEnabled(true);
+                tabs.setBackgroundAt(tabs.getSelectedIndex(), Color.WHITE);
+            }else{
+                users.setText("-Enter a room-");
+                leaveRoom.setEnabled(false);
+            }
+        });
 		
 		// Leave rooms
-		AbstractAction leaveSalaAction = new AbstractAction() {
-			private static final long serialVersionUID = 1L;
+		AbstractAction leaveRoomAction = new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -753,14 +697,14 @@ public class ChatClient {
 			}
 		};
 		
-		// Detect Cntr+W
+		// Detect Ctrl+W
 		KeyStroke ctrlW = KeyStroke.getKeyStroke("control W");
 		
 		InputMap inputMap = content.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		inputMap.put(ctrlW, "closeTab");
 		 
 	    // Now add a single binding for the action name to the anonymous action
-	    content.getActionMap().put("closeTab", leaveSalaAction);
+	    content.getActionMap().put("closeTab", leaveRoomAction);
 	    
 	    JPanel chatSeparator = new JPanel();
 		chatSeparator.setPreferredSize(new Dimension(30, 10));

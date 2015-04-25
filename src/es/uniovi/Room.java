@@ -4,10 +4,10 @@ import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Room {
-	private ChatArea chat;
-	private ArrayList<String> users;
-	public String name;
+class Room {
+	private final ChatArea chat;
+	private final ArrayList<String> users;
+	private final String name;
 	public int num;
 	
 	/**
@@ -39,11 +39,7 @@ public class Room {
 		users.clear();
 		Collections.addAll(users, list);
 		try{
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					displayUsers();
-				}
-			});
+			EventQueue.invokeLater(Room.this::displayUsers);
 		}catch(Exception e){ e.printStackTrace(); }
 	}
 	
@@ -56,11 +52,7 @@ public class Room {
 			users.add(user);
 		}
 		try{
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					displayUsers();
-				}
-			});
+			EventQueue.invokeLater(Room.this::displayUsers);
 		}catch(Exception e){ e.printStackTrace(); }
 	}
 	
@@ -71,11 +63,7 @@ public class Room {
 	public void removeUser(String user){
 		users.remove(user);
 		try{
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					displayUsers();
-				}
-			});
+			EventQueue.invokeLater(Room.this::displayUsers);
 		}catch(Exception e){ e.printStackTrace(); }
 	}
 	
@@ -91,11 +79,7 @@ public class Room {
 			users.add(user);
 			// Update
 			try{
-				EventQueue.invokeAndWait(new Runnable() {
-					public void run() {
-						displayUsers();
-					}
-				});
+				EventQueue.invokeAndWait(Room.this::displayUsers);
 			}catch(Exception e){ e.printStackTrace(); }
 		}
 	}

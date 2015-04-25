@@ -13,29 +13,26 @@ import es.uniovi.ChatClient;
 
 public class Commands extends JDialog {
 
-	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
-	private JTable table;
-
 	/**
 	 * Create the dialog.
 	 */
 	public Commands() {
-		final JDialog ventana = new JDialog(ChatClient.frame, "New room", Dialog.ModalityType.APPLICATION_MODAL);
+		final JDialog window = new JDialog(ChatClient.frame, "New room", Dialog.ModalityType.APPLICATION_MODAL);
 		
-		ventana.setTitle("Commands - ChatClient v3");
-		ventana.setBounds(100, 100, 512, 205);
-		ventana.getContentPane().setLayout(null);
+		window.setTitle("Commands - ChatClient v3");
+		window.setBounds(100, 100, 512, 205);
+		window.getContentPane().setLayout(null);
+		JPanel contentPanel = new JPanel();
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBounds(0, 0, 496, 198);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		ventana.getContentPane().add(contentPanel);
+		window.getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
 		
 		/*
-		 * Listado de comandos
+		 * Command list
 		 */
-		String[] columnNames = {"Comand","Parameters","Description"};
+		String[] columnNames = {"Command","Parameters","Description"};
 		
 		Object[][] data = {
 		    {"/MSG", "Text", "Sends a message, it's also the default command that gets sent if you don't specify another one."},
@@ -46,8 +43,8 @@ public class Commands extends JDialog {
 		    {"/WHO","Room","Get list of users connected to specified room."},
 		    {"/QUIT","","Close the connection with the server"}
 		};
-		
-		table = new JTable(data, columnNames);
+
+		JTable table = new JTable(data, columnNames);
 		table.setShowHorizontalLines(false);
 		table.setBounds(23, 136, 374, -120);
 		
@@ -60,7 +57,7 @@ public class Commands extends JDialog {
 		scrollPane.setBounds(10, 11, 476, 142);
 		table.setFillsViewportHeight(true);
 		contentPanel.add(scrollPane);
-		ventana.setVisible(true);
-		ventana.setAlwaysOnTop(true);
+		window.setVisible(true);
+		window.setAlwaysOnTop(true);
 	}
 }

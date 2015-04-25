@@ -4,9 +4,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 /**
  * Intermediary between the UI and the backend that talks IRC
  */
-public class InThread extends Thread{
+class InThread extends Thread{
 	
-	ArrayBlockingQueue<String> messageQueue = new ArrayBlockingQueue<String>(20);
+	final ArrayBlockingQueue<String> messageQueue = new ArrayBlockingQueue<>(20);
 	
 	/**
 	 * Run the thread
@@ -17,12 +17,12 @@ public class InThread extends Thread{
 
 	public void run(){
 		String line;
-		Comand cmd;
+		Command cmd;
 		try{
 			while(!ChatClient.quit){
 				line = messageQueue.take();
 				// Generate the command
-				cmd = new Comand(line);
+				cmd = new Command(line);
 				// Send the command
 				ChatClient.netOut.send(cmd);
 			}

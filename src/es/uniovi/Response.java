@@ -3,9 +3,9 @@ package es.uniovi;
 import java.util.*;
 
 public class Response {
-	String type;
-	int status;
-	String[] params;
+	final String type;
+	final int status;
+	final String[] params;
 	
 	/**
 	 * Create a response object
