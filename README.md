@@ -22,3 +22,5 @@ Since this was a University project, we were all creating our own different clie
 
 ## License
 Licensed under the GPL license
+
+[![Analytics](https://ga-beacon.appspot.com/UA-3181088-16/irc-gui-java/readme)](https://github.com/aurbano)
